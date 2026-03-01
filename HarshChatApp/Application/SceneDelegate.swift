@@ -9,19 +9,12 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-        var appCoordinator: AppCoordinator? // Keeping a strong reference to the coordinator
+    var appCoordinator: AppCoordinator? // Keeping a strong reference to the coordinator
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
-        // 1. Create a WindowScene
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
-        // 2. Initialize the UIWindow with the windowScene
         let window = UIWindow(windowScene: windowScene)
         self.window = window
-        
-        // 3. Initialize the AppCoordinator and start it
-        // This will handle whether to show Login or Chat screen
         appCoordinator = AppCoordinator(window: window)
         appCoordinator?.start()
     }
