@@ -40,7 +40,7 @@ final class LoginViewController: UIViewController {
         let label = UILabel()
         label.text = "Enter your phone number"
         label.font = AppFont.bold.set(size: 24)
-        label.textColor = AppColor.primaryTeal
+        label.textColor = AppColor.primaryColor
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +89,7 @@ final class LoginViewController: UIViewController {
         tf.placeholder = "Enter 10 digits"
         tf.keyboardType = .numberPad
         tf.font = AppFont.medium.set(size: 19)
-        tf.tintColor = AppColor.primaryTeal
+        tf.tintColor = AppColor.primaryColor
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -102,9 +102,9 @@ final class LoginViewController: UIViewController {
         tf.backgroundColor = .secondarySystemGroupedBackground
         tf.layer.cornerRadius = 16
         tf.layer.borderWidth = 1.5
-        tf.layer.borderColor = AppColor.primaryTeal.withAlphaComponent(0.3).cgColor
+        tf.layer.borderColor = AppColor.primaryColor.withAlphaComponent(0.3).cgColor
         tf.textAlignment = .center
-        tf.tintColor = AppColor.primaryTeal
+        tf.tintColor = AppColor.primaryColor
         tf.alpha = 0
         tf.isHidden = true
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +118,7 @@ final class LoginViewController: UIViewController {
         button.backgroundColor = .systemGray4
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
-        button.layer.shadowColor = AppColor.primaryTeal.cgColor
+        button.layer.shadowColor = AppColor.primaryColor.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
         button.layer.shadowRadius = 8
         button.layer.shadowOpacity = 0
@@ -297,7 +297,7 @@ final class LoginViewController: UIViewController {
         let isEnabled = (count == target)
 
         UIView.animate(withDuration: 0.3) {
-            self.actionButton.backgroundColor = isEnabled ? AppColor.primaryTeal : .systemGray4
+            self.actionButton.backgroundColor = isEnabled ? AppColor.primaryColor : .systemGray4
             self.actionButton.layer.shadowOpacity = isEnabled ? 0.3 : 0
             self.actionButton.transform = isEnabled ? CGAffineTransform(scaleX: 1.02, y: 1.02) : .identity
         }
@@ -350,7 +350,7 @@ extension LoginViewController: UITextFieldDelegate {
         if updatedText.count <= limit {
             textField.text = updatedText
             updateButtonStyle()
-            textField.superview?.layer.borderColor = updatedText.count == limit ? AppColor.primaryTeal.cgColor : UIColor.systemGray6.cgColor
+            textField.superview?.layer.borderColor = updatedText.count == limit ? AppColor.primaryColor.cgColor : UIColor.systemGray6.cgColor
         }
         return false
     }

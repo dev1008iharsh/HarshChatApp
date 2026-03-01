@@ -24,7 +24,7 @@ final class EditProfileViewController: UIViewController {
         iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 60
         iv.layer.borderWidth = 3
-        iv.layer.borderColor = AppColor.primaryTeal.cgColor
+        iv.layer.borderColor = AppColor.primaryColor.cgColor
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ final class EditProfileViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
         btn.setImage(UIImage(systemName: "camera.fill", withConfiguration: config), for: .normal)
         btn.tintColor = .white
-        btn.backgroundColor = AppColor.primaryTeal
+        btn.backgroundColor = AppColor.primaryColor
         btn.layer.cornerRadius = 18
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
@@ -49,7 +49,7 @@ final class EditProfileViewController: UIViewController {
 
     private let genderSegment: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Male", "Female", "Other"])
-        sc.selectedSegmentTintColor = AppColor.primaryTeal
+        sc.selectedSegmentTintColor = AppColor.primaryColor
         sc.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         sc.translatesAutoresizingMaskIntoConstraints = false
         return sc
@@ -125,7 +125,7 @@ final class EditProfileViewController: UIViewController {
             target: self,
             action: #selector(didTapUpdate)
         )
-        navigationController?.navigationBar.tintColor = AppColor.primaryTeal
+        navigationController?.navigationBar.tintColor = AppColor.primaryColor
     }
 
     private func populateData() {

@@ -33,22 +33,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func showMainTab() {
         let tabBar = UITabBarController()
 
+        // 1. Conversation / Chat List
         let chatVC = ConversationListViewController()
-        chatVC.view.backgroundColor = .systemBackground
         chatVC.title = "Chats"
         let chatNav = UINavigationController(rootViewController: chatVC)
-        chatNav.tabBarItem = UITabBarItem(title: "Chats", image: UIImage(systemName: "message.fill"), tag: 0)
+        chatNav.tabBarItem = UITabBarItem(title: "Chats", image: UIImage(systemName: "bubble.left.and.bubble.right"), selectedImage: UIImage(systemName: "bubble.left.and.bubble.right.fill"))
+        chatNav.navigationBar.prefersLargeTitles = true // ✅ Makes it look professional
 
+        // 2. Settings
         let settingsVM = SettingsViewModel()
         let settingsVC = SettingsViewController(viewModel: settingsVM)
+        settingsVC.title = "Settings"
         let settingsNav = UINavigationController(rootViewController: settingsVC)
-        settingsNav.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), tag: 1)
+        settingsNav.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape"), selectedImage: UIImage(systemName: "gearshape.fill"))
+        settingsNav.navigationBar.prefersLargeTitles = true
 
+        // ✅ TabBar Appearance Fix for iOS 15+
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .systemBackground
+            tabBar.tabBar.standardAppearance = appearance
+            tabBar.tabBar.scrollEdgeAppearance = appearance
+        }
+        
         tabBar.viewControllers = [chatNav, settingsNav]
-        tabBar.tabBar.tintColor = AppColor.primaryTeal
-        tabBar.tabBar.backgroundColor = .systemBackground
-
-        setRootViewController(tabBar, direction: .transitionFlipFromRight)
+        tabBar.tabBar.tintColor = AppColor.primaryColor
+        
+        // ✅ Smooth Transition
+        setRootViewController(tabBar, direction: .transitionCrossDissolve)
     }
 
     private func setRootViewController(_ vc: UIViewController, direction: UIView.AnimationOptions) {

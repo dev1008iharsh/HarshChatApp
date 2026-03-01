@@ -6,19 +6,24 @@ final class NewChatViewModel {
     private let db = Firestore.firestore()
     var allContacts = [ContactModel]()
     var filteredContacts = [ContactModel]()
-    
     var onDataLoaded: (() -> Void)?
 
     func loadAndCheckContacts() {
         ContactService.shared.fetchPhoneContacts { [weak self] phoneContacts in
-            self?.allContacts = phoneContacts
-            self?.filteredContacts = phoneContacts
+            // Sort contacts alphabetically
+            let sorted = phoneContacts.sorted { $0.firstName < $1.firstName }
+            self?.allContacts = sorted
+            self?.filteredContacts = sorted
             self?.onDataLoaded?()
         }
     }
     
-    func searchUser(with number: String, completion: @escaping (User?) -> Void) {
-        let fullNumber = "+91\(number)"
+    // ✅ Bug Fix: Improved User Search with +91 handling
+    func searchUser(with number: String, completion: @escaping (ChatUser?) -> Void) {
+        var fullNumber = number
+        if !number.hasPrefix("+") {
+            fullNumber = "+91\(number)"
+        }
         
         db.collection("users").whereField("phoneNumber", isEqualTo: fullNumber).getDocuments { snapshot, _ in
             guard let doc = snapshot?.documents.first else {
@@ -27,11 +32,10 @@ final class NewChatViewModel {
             }
             
             let data = doc.data()
-            let user = User(
-                uid: doc.documentID,
+            let user = ChatUser(
+                senderId: doc.documentID,
+                displayName: data["name"] as? String ?? "Unknown",
                 phoneNumber: data["phoneNumber"] as? String ?? "",
-                name: data["name"] as? String ?? "",
-                bio: data["bio"] as? String ?? "",
                 profileImageUrl: data["profileImageUrl"] as? String
             )
             completion(user)
@@ -40,6 +44,7 @@ final class NewChatViewModel {
     
     func generateChatId(with otherUserUid: String) -> String {
         guard let currentUid = Auth.auth().currentUser?.uid else { return "" }
+        // Unique ID created by combining UIDs (Lexicographical order)
         return currentUid < otherUserUid ? "\(currentUid)_\(otherUserUid)" : "\(otherUserUid)_\(currentUid)"
     }
     

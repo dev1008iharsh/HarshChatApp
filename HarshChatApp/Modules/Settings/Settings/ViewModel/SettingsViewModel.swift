@@ -54,7 +54,7 @@ final class SettingsViewModel {
             subtitle: currentUser?.bio,
             iconName: "person.fill",
             iconBackgroundColor: .systemGray5,
-            iconTintColor: AppColor.primaryTeal,
+            iconTintColor: AppColor.primaryColor,
             titleColor: AppColor.primaryText,
             isLogout: false
         ) { [weak self] in
@@ -69,7 +69,7 @@ final class SettingsViewModel {
                 title: "App Settings",
                 options: [
                     SettingsOption(title: "Account", subtitle: "Privacy, security", iconName: "key.fill", iconBackgroundColor: .systemBlue, iconTintColor: .label, titleColor: AppColor.primaryText, isLogout: false) { self.showAlert?("Account Settings") },
-                    SettingsOption(title: "Chats", subtitle: "Theme, wallpapers", iconName: "message.fill", iconBackgroundColor: AppColor.primaryTeal, iconTintColor: .label, titleColor: AppColor.primaryText, isLogout: false) { self.showAlert?("Chat Settings") },
+                    SettingsOption(title: "Chats", subtitle: "Theme, wallpapers", iconName: "message.fill", iconBackgroundColor: AppColor.primaryColor, iconTintColor: .label, titleColor: AppColor.primaryText, isLogout: false) { self.showAlert?("Chat Settings") },
                     SettingsOption(title: "Notifications", subtitle: "Tones", iconName: "bell.badge.fill", iconBackgroundColor: .systemRed, iconTintColor: .label, titleColor: AppColor.primaryText, isLogout: false) { self.showAlert?("Notifications") },
                     SettingsOption(title: "Storage", subtitle: "Network usage", iconName: "chart.pie.fill", iconBackgroundColor: .systemGreen, iconTintColor: .label, titleColor: AppColor.primaryText, isLogout: false) { self.showAlert?("Storage and Data") }
                 ]

@@ -6,6 +6,7 @@ final class NewChatViewController: UIViewController {
     private let viewModel = NewChatViewModel()
     private let tableView = UITableView()
     
+    // ✅ Custom Search Field from your current code
     private let searchField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Enter 10-digit number"
@@ -15,8 +16,8 @@ final class NewChatViewController: UIViewController {
         
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
         label.text = "  +91 "
-        label.font = AppFont.bold.set(size: 16)
-        label.textColor = AppColor.primaryTeal
+        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.textColor = AppColor.primaryColor
         tf.leftView = label
         tf.leftViewMode = .always
         
@@ -66,7 +67,7 @@ final class NewChatViewController: UIViewController {
             target: self,
             action: #selector(didTapCancel)
         )
-        navigationController?.navigationBar.tintColor = AppColor.primaryTeal
+        navigationController?.navigationBar.tintColor = AppColor.primaryColor
     }
 
     private func bindViewModel() {
@@ -80,26 +81,30 @@ final class NewChatViewController: UIViewController {
     }
 
     @objc private func searchDidChanged(_ textField: UITextField) {
-        guard let text = textField.text, text.count == 10 else { return }
+        guard let text = textField.text, text.count == 10 else {
+            viewModel.filterContacts(with: textField.text ?? "")
+            return
+        }
         
-        viewModel.searchUser(with: text) { [weak self] user in
-            if let registeredUser = user {
-                self?.startChat(with: registeredUser)
+        // ✅ Check if user exists on Firebase
+        viewModel.searchUser(with: text) { [weak self] registeredUser in
+            if let user = registeredUser {
+                self?.startChat(with: user)
             } else {
                 self?.showInviteAlert(number: "+91\(text)")
             }
         }
     }
 
-    private func startChat(with user: User) {
-        let chatId = viewModel.generateChatId(with: user.uid)
-        let chatVM = ChatViewModel(chatId: chatId)
+    private func startChat(with user: ChatUser) {
+        let chatId = viewModel.generateChatId(with: user.senderId)
+        let chatVM = ChatViewModel(chatId: chatId, otherUser: user)
         let chatVC = ChatViewController(viewModel: chatVM)
-        chatVC.title = user.name
         navigationController?.pushViewController(chatVC, animated: true)
     }
 
-    private func showInviteAlert(number: String) {
+    // ✅ FIXED: Missing showInviteAlert member added here
+    func showInviteAlert(number: String) {
         let alert = UIAlertController(
             title: "User Not Found",
             message: "\(number) is not on HarshChat yet. Invite them?",
@@ -112,23 +117,23 @@ final class NewChatViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    private func sendSMS(number: String) {
-        // ✅ સિમ્યુલેટર પર આ કામ નહીં કરે, ફિઝિકલ આઇફોન જોઈએ
+    // ✅ FIXED: Missing sendSMS member added here
+    func sendSMS(number: String) {
         if MFMessageComposeViewController.canSendText() {
             let vc = MFMessageComposeViewController()
             vc.body = "I am inviting you to this wonderful chat app! Download it here: https://dev1008iharsh.github.io/"
             vc.recipients = [number]
             vc.messageComposeDelegate = self
-            self.present(vc, animated: true, completion: nil)
+            self.present(vc, animated: true)
         } else {
-            // જો સિમ્યુલેટર હોય તો આ એલર્ટ આવશે
-            let errorAlert = UIAlertController(title: "Error", message: "SMS service is not available on this device (Simulators don't support SMS).", preferredStyle: .alert)
+            let errorAlert = UIAlertController(title: "Error", message: "SMS service not available.", preferredStyle: .alert)
             errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
             present(errorAlert, animated: true)
         }
     }
 }
 
+// MARK: - TableView & Delegates
 extension NewChatViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.filteredContacts.count
@@ -139,18 +144,30 @@ extension NewChatViewController: UITableViewDataSource, UITableViewDelegate {
         let contact = viewModel.filteredContacts[indexPath.row]
         cell.textLabel?.text = "\(contact.firstName) \(contact.lastName)"
         cell.detailTextLabel?.text = contact.phoneNumber
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let contact = viewModel.filteredContacts[indexPath.row]
-        self.showInviteAlert(number: contact.phoneNumber)
+        
+        // Cleaning number for search
+        let cleanNumber = contact.phoneNumber.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+        
+        viewModel.searchUser(with: cleanNumber) { [weak self] user in
+            if let registeredUser = user {
+                self?.startChat(with: registeredUser)
+            } else {
+                self?.showInviteAlert(number: contact.phoneNumber)
+            }
+        }
     }
 }
 
+// MARK: - MFMessageCompose Delegate
 extension NewChatViewController: MFMessageComposeViewControllerDelegate {
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        controller.dismiss(animated: true, completion: nil)
+        controller.dismiss(animated: true)
     }
 }
