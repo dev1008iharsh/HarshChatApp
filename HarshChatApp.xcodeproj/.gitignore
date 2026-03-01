@@ -1,0 +1,27 @@
+
+# Xcode
+#
+# gitignore contributors: checkout the Python file edit-gitignore.py to add/remove entries
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
+
+# Firebase (Private Credentials)
+GoogleService-Info.plist
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Bundle
+.bundle/
+vendor/bundle
+
+# Others
+.DS_Store
+*.swp
+*.lock
