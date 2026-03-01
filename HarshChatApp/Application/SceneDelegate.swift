@@ -1,49 +1,79 @@
-//
-//  SceneDelegate.swift
-//  HarshChatApp
-//
-//  Created by Harsh on 01/03/26.
-//
-
+import FirebaseAuth
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-    var appCoordinator: AppCoordinator? // Keeping a strong reference to the coordinator
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+
         let window = UIWindow(windowScene: windowScene)
         self.window = window
-        appCoordinator = AppCoordinator(window: window)
-        appCoordinator?.start()
+
+        checkAuthentication()
     }
 
-    func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+    func checkAuthentication() {
+        if Auth.auth().currentUser != nil {
+            showMainTab()
+        } else {
+            showLogin()
+        }
     }
 
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    // MARK: - Navigation Methods
+
+    func showLogin() {
+        let viewModel = LoginViewModel()
+
+        viewModel.onSuccess = { [weak self] in
+            self?.showMainTab()
+        }
+
+        let loginVC = LoginViewController(viewModel: viewModel)
+        let nav = UINavigationController(rootViewController: loginVC)
+        nav.setNavigationBarHidden(true, animated: false)
+
+        setRootViewController(nav, direction: .transitionFlipFromLeft)
     }
 
-    func sceneWillResignActive(_ scene: UIScene) {
-        // Called when the scene will move from an active state to an inactive state.
-        // This may occur due to temporary interruptions (ex. an incoming phone call).
+    func showMainTab() {
+        let tabBar = UITabBarController()
+
+        // 1. Chat Tab
+        let chatVC = UIViewController()
+        chatVC.view.backgroundColor = .systemBackground
+        chatVC.title = "Chats"
+        let chatNav = UINavigationController(rootViewController: chatVC)
+        chatNav.tabBarItem = UITabBarItem(title: "Chats", image: UIImage(systemName: "message.fill"), tag: 0)
+
+        // 2. Settings Tab ✅
+        // અહીં આપણે ખાતરી કરીશું કે ViewModel પ્રોપરલી ઇન્જેક્ટ થાય છે
+        let settingsVM = SettingsViewModel()
+        let settingsVC = SettingsViewController(viewModel: settingsVM)
+        let settingsNav = UINavigationController(rootViewController: settingsVC)
+        settingsNav.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), tag: 1)
+
+        // Tab Bar Configuration
+        tabBar.viewControllers = [chatNav, settingsNav]
+        tabBar.tabBar.tintColor = AppColor.primaryTeal // તારો બ્રાન્ડ કલર 🟢
+        tabBar.tabBar.backgroundColor = .systemBackground
+
+        setRootViewController(tabBar, direction: .transitionFlipFromRight)
     }
 
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
-    }
+    private func setRootViewController(_ vc: UIViewController, direction: UIView.AnimationOptions = .transitionCrossDissolve) {
+        // ખાતરી કરો કે વિન્ડો અસ્તિત્વમાં છે
+        guard let window = window else { return }
 
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+        window.rootViewController = vc
+        window.makeKeyAndVisible()
+
+        // ✨ 2026 Smooth Transition
+        UIView.transition(with: window,
+                          duration: 0.5,
+                          options: direction,
+                          animations: nil,
+                          completion: nil)
     }
 }

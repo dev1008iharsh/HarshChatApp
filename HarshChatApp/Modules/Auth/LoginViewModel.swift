@@ -1,20 +1,10 @@
-//
-//  LoginViewModel.swift
-//  HarshChatApp
-//
-//  Created by Harsh on 01/03/26.
-//
-
 import FirebaseAuth
 import Foundation
 
-protocol LoginCoordinatorProtocol: AnyObject {
-    func didFinishAuth()
-}
-
 final class LoginViewModel {
-    weak var coordinator: LoginCoordinatorProtocol?
+    // MARK: - Properties
 
+    // ઇનપુટ સ્ટેટ મેનેજમેન્ટ માટેના ઓબ્ઝર્વેબલ્સ
     var isOTPSent: Bool = false {
         didSet { onStateChange?(isOTPSent) }
     }
@@ -27,81 +17,81 @@ final class LoginViewModel {
         didSet { onError?(errorMessage) }
     }
 
+    // MARK: - Callbacks (Data Binding)
+
+    // ViewController આ ક્લોઝર્સને બાઇન્ડ કરશે
     var onStateChange: ((Bool) -> Void)?
     var onLoading: ((Bool) -> Void)?
     var onError: ((String?) -> Void)?
+    var onSuccess: (() -> Void)?
 
     private var verificationID: String?
 
-    func handleMainButtonAction(phoneNumber: String?, otpCode: String?) {
-        if !isOTPSent {
-            guard let phone = phoneNumber, phone.count == 13 else {
-                onError?("Please enter your 10-digit mobile number to continue.")
-                return
-            }
+    // MARK: - Main Logic
 
-            guard phone.hasPrefix("+91") else {
-                onError?("Invalid country code. Please use a valid number.")
-                return
+    /// બટન ક્લિક પર ફોન વેરીફિકેશન અથવા OTP વેરીફિકેશન નક્કી કરશે
+    func handleMainButtonAction(phoneNumber: String, otpCode: String) {
+        Task {
+            if !isOTPSent {
+                await startVerification(phone: phoneNumber)
+            } else {
+                await verifyOTP(code: otpCode)
             }
-
-            startVerification(phone: phone)
-        } else {
-            guard let otp = otpCode, otp.count == 6 else {
-                onError?("The OTP must be 6 digits. Please check and try again.")
-                return
-            }
-
-            verifyOTP(code: otp)
         }
     }
 
-    private func startVerification(phone: String) {
-        isLoading = true
+    // MARK: - Private API Methods
 
-        PhoneAuthProvider.provider().verifyPhoneNumber(phone, uiDelegate: nil) { [weak self] vID, error in
-            guard let self = self else { return }
-            self.isLoading = false
-
-            if let error = error {
-                self.errorMessage = error.localizedDescription
-                return
-            }
-
-            guard let vID = vID else {
-                self.errorMessage = "Failed to get Verification ID from Firebase."
-                return
-            }
-
-            self.verificationID = vID
-            self.isOTPSent = true
-        }
-    }
-
-    private func verifyOTP(code: String) {
-        guard let vID = verificationID else {
-            errorMessage = "Session expired. Please try sending OTP again."
-            isOTPSent = false
+    @MainActor
+    private func startVerification(phone: String) async {
+        // Validation: ભારતીય નંબર માટે +91 અને 10 આંકડા હોવા જરૂરી છે
+        guard phone.count == 13, phone.hasPrefix("+91") else {
+            errorMessage = "Please enter your 10-digit mobile number to continue."
             return
         }
 
         isLoading = true
+        errorMessage = nil
 
-        let credential = PhoneAuthProvider.provider().credential(
-            withVerificationID: vID,
-            verificationCode: code
-        )
+        do {
+            // Firebase OTP Send
+            let vID = try await AuthService.shared.sendOTP(phoneNumber: phone)
+            verificationID = vID
+            isOTPSent = true
+            isLoading = false
+        } catch {
+            isLoading = false
+            errorMessage = error.localizedDescription
+        }
+    }
 
-        Auth.auth().signIn(with: credential) { [weak self] _, error in
-            guard let self = self else { return }
-            self.isLoading = false
+    @MainActor
+    private func verifyOTP(code: String) async {
+        // Validation: OTP હંમેશા 6 આંકડાનો હોવો જોઈએ
+        guard let vID = verificationID, code.count == 6 else {
+            errorMessage = "The OTP must be 6 digits."
+            return
+        }
 
-            if let error = error {
-                self.errorMessage = error.localizedDescription
-                return
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            // Firebase Credential Verification
+            let authResult = try await AuthService.shared.verifyCredential(verificationID: vID, code: code)
+
+            // જો નવો યુઝર હોય, તો Firestore માં પ્રોફાઇલ ડેટા ક્રિએટ કરવો
+            if authResult.additionalUserInfo?.isNewUser == true {
+                let newUser = User(uid: authResult.user.uid, phoneNumber: authResult.user.phoneNumber ?? "")
+                try await AuthService.shared.createNewUser(user: newUser)
             }
 
-            self.coordinator?.didFinishAuth()
+            isLoading = false
+            // સફળતાપૂર્વક લોગિન થયા પછી આ કોલબેક ViewController ને જાણ કરશે
+            onSuccess?()
+        } catch {
+            isLoading = false
+            errorMessage = error.localizedDescription
         }
     }
 }

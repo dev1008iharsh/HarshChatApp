@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04325CE32F5441C700F7D35C /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CE22F5441C600F7D35C /* AuthCoordinator.swift */; };
-		04325CE52F5441D300F7D35C /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CE42F5441D200F7D35C /* ChatCoordinator.swift */; };
-		04325CE72F5441DB00F7D35C /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CE62F5441DA00F7D35C /* ProfileCoordinator.swift */; };
-		04325CE92F5441E200F7D35C /* MainTabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CE82F5441E200F7D35C /* MainTabBarCoordinator.swift */; };
-		04325CEB2F5441EA00F7D35C /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CEA2F5441E900F7D35C /* AppCoordinator.swift */; };
+		0426EE172F547E4800AB494F /* LoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426EE162F547E4700AB494F /* LoaderManager.swift */; };
+		0426EE1A2F547F2100AB494F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0426EE192F547F2100AB494F /* Kingfisher */; };
 		04325CED2F54427D00F7D35C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CEC2F54427D00F7D35C /* LoginViewModel.swift */; };
+		04325CF02F5449B700F7D35C /* SettingsOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CEF2F5449B600F7D35C /* SettingsOption.swift */; };
+		04325CF22F5449BC00F7D35C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CF12F5449BB00F7D35C /* SettingsViewModel.swift */; };
+		04325CF42F5449C100F7D35C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325CF32F5449C000F7D35C /* SettingsViewController.swift */; };
+		04325D542F54593900F7D35C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D532F54593800F7D35C /* EditProfileViewController.swift */; };
+		04325D632F545A4A00F7D35C /* FirebaseProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D622F545A4A00F7D35C /* FirebaseProfileService.swift */; };
+		04325D652F545A5600F7D35C /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D642F545A5500F7D35C /* EditProfileViewModel.swift */; };
+		04325D672F5461D200F7D35C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D662F5461D100F7D35C /* User.swift */; };
+		04325D692F5462B400F7D35C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D682F5462B300F7D35C /* AuthService.swift */; };
 		04C9B98B2F53FB4A00D427FA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98A2F53FB4A00D427FA /* FirebaseAnalytics */; };
 		04C9B98D2F53FB4A00D427FA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98C2F53FB4A00D427FA /* FirebaseAuth */; };
 		04C9B98F2F53FB4A00D427FA /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98E2F53FB4A00D427FA /* FirebaseDatabase */; };
@@ -37,12 +42,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04325CE22F5441C600F7D35C /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
-		04325CE42F5441D200F7D35C /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
-		04325CE62F5441DA00F7D35C /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
-		04325CE82F5441E200F7D35C /* MainTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarCoordinator.swift; sourceTree = "<group>"; };
-		04325CEA2F5441E900F7D35C /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		0426EE162F547E4700AB494F /* LoaderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderManager.swift; sourceTree = "<group>"; };
 		04325CEC2F54427D00F7D35C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		04325CEF2F5449B600F7D35C /* SettingsOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOption.swift; sourceTree = "<group>"; };
+		04325CF12F5449BB00F7D35C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		04325CF32F5449C000F7D35C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		04325D532F54593800F7D35C /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		04325D622F545A4A00F7D35C /* FirebaseProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseProfileService.swift; sourceTree = "<group>"; };
+		04325D642F545A5500F7D35C /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		04325D662F5461D100F7D35C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		04325D682F5462B300F7D35C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		04C9B96F2F53F87500D427FA /* HarshChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarshChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9B9A22F53FE6800D427FA /* GoogleSansCode-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Bold.ttf"; sourceTree = "<group>"; };
 		04C9B9A32F53FE6800D427FA /* GoogleSansCode-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Light.ttf"; sourceTree = "<group>"; };
@@ -69,6 +78,7 @@
 			files = (
 				04C9B98F2F53FB4A00D427FA /* FirebaseDatabase in Frameworks */,
 				04C9B9912F53FB4A00D427FA /* FirebaseFirestore in Frameworks */,
+				0426EE1A2F547F2100AB494F /* Kingfisher in Frameworks */,
 				04C9B98B2F53FB4A00D427FA /* FirebaseAnalytics in Frameworks */,
 				04C9B98D2F53FB4A00D427FA /* FirebaseAuth in Frameworks */,
 				04C9B9932F53FB4A00D427FA /* FirebaseRemoteConfig in Frameworks */,
@@ -79,16 +89,89 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04325CE12F5441BD00F7D35C /* Coordinators */ = {
+		04325CEE2F5449A900F7D35C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				04325CEA2F5441E900F7D35C /* AppCoordinator.swift */,
-				04325CE82F5441E200F7D35C /* MainTabBarCoordinator.swift */,
-				04325CE62F5441DA00F7D35C /* ProfileCoordinator.swift */,
-				04325CE42F5441D200F7D35C /* ChatCoordinator.swift */,
-				04325CE22F5441C600F7D35C /* AuthCoordinator.swift */,
+				04325D5C2F5459FC00F7D35C /* Profile */,
+				04325D552F5459E500F7D35C /* Settings */,
 			);
-			path = Coordinators;
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		04325D552F5459E500F7D35C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				04325D582F5459F500F7D35C /* ViewModel */,
+				04325D572F5459F000F7D35C /* View */,
+				04325D562F5459EB00F7D35C /* Model */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		04325D562F5459EB00F7D35C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				04325CEF2F5449B600F7D35C /* SettingsOption.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		04325D572F5459F000F7D35C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				04325CF32F5449C000F7D35C /* SettingsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		04325D582F5459F500F7D35C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				04325CF12F5449BB00F7D35C /* SettingsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		04325D592F5459FC00F7D35C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				04325D642F545A5500F7D35C /* EditProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		04325D5A2F5459FC00F7D35C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				04325D532F54593800F7D35C /* EditProfileViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		04325D5B2F5459FC00F7D35C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		04325D5C2F5459FC00F7D35C /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				04325D612F545A3B00F7D35C /* Services */,
+				04325D592F5459FC00F7D35C /* ViewModel */,
+				04325D5A2F5459FC00F7D35C /* View */,
+				04325D5B2F5459FC00F7D35C /* Model */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		04325D612F545A3B00F7D35C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				04325D622F545A4A00F7D35C /* FirebaseProfileService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		04C9B9662F53F87500D427FA = {
@@ -122,8 +205,6 @@
 		04C9B9B02F53FE6800D427FA /* HarshChatApp */ = {
 			isa = PBXGroup;
 			children = (
-				04325CE12F5441BD00F7D35C /* Coordinators */,
-				04C9B9D02F54016000D427FA /* Models */,
 				04C9B9CF2F54015800D427FA /* Modules */,
 				04C9B9CE2F54015300D427FA /* Managers */,
 				04C9B9C62F5400BD00D427FA /* Core */,
@@ -183,6 +264,7 @@
 		04C9B9CE2F54015300D427FA /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				0426EE162F547E4700AB494F /* LoaderManager.swift */,
 				04C9B9E12F54164600D427FA /* AlertManager.swift */,
 			);
 			path = Managers;
@@ -192,20 +274,16 @@
 			isa = PBXGroup;
 			children = (
 				04C9B9D12F54030400D427FA /* Auth */,
+				04325CEE2F5449A900F7D35C /* Settings */,
 			);
 			path = Modules;
-			sourceTree = "<group>";
-		};
-		04C9B9D02F54016000D427FA /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		04C9B9D12F54030400D427FA /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				04325D682F5462B300F7D35C /* AuthService.swift */,
+				04325D662F5461D100F7D35C /* User.swift */,
 				04C9B9D92F54040000D427FA /* LoginViewController.swift */,
 				04325CEC2F54427D00F7D35C /* LoginViewModel.swift */,
 			);
@@ -235,6 +313,7 @@
 				04C9B9902F53FB4A00D427FA /* FirebaseFirestore */,
 				04C9B9922F53FB4A00D427FA /* FirebaseRemoteConfig */,
 				04C9B9942F53FB4A00D427FA /* FirebaseStorage */,
+				0426EE192F547F2100AB494F /* Kingfisher */,
 			);
 			productName = HarshChatApp;
 			productReference = 04C9B96F2F53F87500D427FA /* HarshChatApp.app */;
@@ -266,6 +345,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0426EE182F547F2100AB494F /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 04C9B9702F53F87500D427FA /* Products */;
@@ -300,19 +380,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04325CE32F5441C700F7D35C /* AuthCoordinator.swift in Sources */,
-				04325CE52F5441D300F7D35C /* ChatCoordinator.swift in Sources */,
+				04325D632F545A4A00F7D35C /* FirebaseProfileService.swift in Sources */,
+				04325D652F545A5600F7D35C /* EditProfileViewModel.swift in Sources */,
 				04C9B9DC2F54065600D427FA /* UITextField+Ext.swift in Sources */,
-				04325CE72F5441DB00F7D35C /* ProfileCoordinator.swift in Sources */,
+				04325D692F5462B400F7D35C /* AuthService.swift in Sources */,
 				04C9B9E22F54164D00D427FA /* AlertManager.swift in Sources */,
+				04325CF22F5449BC00F7D35C /* SettingsViewModel.swift in Sources */,
+				04325D672F5461D200F7D35C /* User.swift in Sources */,
 				04325CED2F54427D00F7D35C /* LoginViewModel.swift in Sources */,
-				04325CEB2F5441EA00F7D35C /* AppCoordinator.swift in Sources */,
+				04325CF42F5449C100F7D35C /* SettingsViewController.swift in Sources */,
 				04C9B9CB2F54011A00D427FA /* AppFont.swift in Sources */,
+				04325D542F54593900F7D35C /* EditProfileViewController.swift in Sources */,
 				04C9B9B12F53FE6800D427FA /* AppDelegate.swift in Sources */,
 				04C9B9DA2F54040000D427FA /* LoginViewController.swift in Sources */,
 				04C9B9B22F53FE6800D427FA /* SceneDelegate.swift in Sources */,
-				04325CE92F5441E200F7D35C /* MainTabBarCoordinator.swift in Sources */,
+				0426EE172F547E4800AB494F /* LoaderManager.swift in Sources */,
 				04C9B9CD2F54012500D427FA /* AppColor.swift in Sources */,
+				04325CF02F5449B700F7D35C /* SettingsOption.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +621,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0426EE182F547F2100AB494F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.7.0;
+			};
+		};
 		04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -548,6 +640,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0426EE192F547F2100AB494F /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0426EE182F547F2100AB494F /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		04C9B98A2F53FB4A00D427FA /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

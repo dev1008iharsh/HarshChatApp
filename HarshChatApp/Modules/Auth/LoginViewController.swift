@@ -1,19 +1,15 @@
-//
-//  LoginViewController.swift
-//  HarshChatApp
-//
-//  Created by Harsh on 01/03/26.
-//
-
 import UIKit
 
 final class LoginViewController: UIViewController {
     private let viewModel: LoginViewModel
     private var actionButtonTopConstraint: NSLayoutConstraint?
 
+    // MARK: - UI Elements
+
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
+        sv.keyboardDismissMode = .onDrag
         sv.translatesAutoresizingMaskIntoConstraints = false
         return sv
     }()
@@ -27,8 +23,8 @@ final class LoginViewController: UIViewController {
     private let logoImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "app_logo")
-        iv.contentMode = .scaleAspectFill
-        iv.layer.cornerRadius = 20
+        iv.contentMode = .scaleAspectFit
+        iv.layer.cornerRadius = 16
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
@@ -45,7 +41,7 @@ final class LoginViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Enter your phone number"
-        label.font = AppFont.bold.set(size: 20)
+        label.font = AppFont.bold.set(size: 24)
         label.textColor = AppColor.primaryTeal
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -56,8 +52,8 @@ final class LoginViewController: UIViewController {
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = "We'll send a one-time password to verify your identity."
-        label.font = AppFont.regular.set(size: 16)
-        label.textColor = .secondaryLabel
+        label.font = AppFont.regular.set(size: 15)
+        label.textColor = AppColor.secondaryText
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -66,24 +62,26 @@ final class LoginViewController: UIViewController {
 
     private let phoneInputContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = .secondarySystemBackground
-        view.layer.cornerRadius = 12
+        view.backgroundColor = .secondarySystemGroupedBackground
+        view.layer.cornerRadius = 16
+        view.layer.borderWidth = 1.5
+        view.layer.borderColor = UIColor.systemGray6.cgColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private let countryCodeLabel: UILabel = {
         let label = UILabel()
-        label.text = "+91"
+        label.text = "🇮🇳 +91"
         label.font = AppFont.semiBold.set(size: 18)
-        label.textColor = .label
+        label.textColor = AppColor.primaryText
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private let verticalDivider: UIView = {
         let view = UIView()
-        view.backgroundColor = .separator
+        view.backgroundColor = .systemGray5
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -92,11 +90,8 @@ final class LoginViewController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "Enter 10 digits"
         tf.keyboardType = .numberPad
-        tf.font = AppFont.medium.set(size: 18)
-        tf.tintColor = .systemGreen
-        tf.textAlignment = .left
-        tf.contentHorizontalAlignment = .left
-        tf.semanticContentAttribute = .forceLeftToRight
+        tf.font = AppFont.medium.set(size: 19)
+        tf.tintColor = AppColor.primaryTeal
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -105,15 +100,15 @@ final class LoginViewController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "Enter 6-digit OTP"
         tf.keyboardType = .numberPad
-        tf.font = AppFont.bold.set(size: 18)
-        tf.backgroundColor = .secondarySystemBackground
-        tf.layer.cornerRadius = 12
-        tf.setLeftPaddingPoints(15)
-        tf.tintColor = .systemGreen
+        tf.font = AppFont.bold.set(size: 20)
+        tf.backgroundColor = .secondarySystemGroupedBackground
+        tf.layer.cornerRadius = 16
+        tf.layer.borderWidth = 1.5
+        tf.layer.borderColor = AppColor.primaryTeal.withAlphaComponent(0.3).cgColor
+        tf.textAlignment = .center
+        tf.tintColor = AppColor.primaryTeal
         tf.alpha = 0
         tf.isHidden = true
-        tf.textAlignment = .left
-        tf.semanticContentAttribute = .forceLeftToRight
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -124,8 +119,15 @@ final class LoginViewController: UIViewController {
         button.titleLabel?.font = AppFont.bold.set(size: 18)
         button.backgroundColor = .systemGray4
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+
+        // Shadow for premium look
+        button.layer.shadowColor = AppColor.primaryTeal.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.shadowRadius = 8
+        button.layer.shadowOpacity = 0
+
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -138,12 +140,16 @@ final class LoginViewController: UIViewController {
         return ai
     }()
 
+    // MARK: - Init
+
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -165,11 +171,13 @@ final class LoginViewController: UIViewController {
             contentView.addSubview($0)
         }
 
-        phoneInputContainer.addSubview(countryCodeLabel)
-        phoneInputContainer.addSubview(verticalDivider)
-        phoneInputContainer.addSubview(phoneTextField)
+        [countryCodeLabel, verticalDivider, phoneTextField].forEach { phoneInputContainer.addSubview($0) }
         actionButton.addSubview(activityIndicator)
 
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -182,107 +190,60 @@ final class LoginViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
             logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoImageView.heightAnchor.constraint(equalToConstant: 60),
-            logoImageView.widthAnchor.constraint(equalToConstant: 60),
+            logoImageView.heightAnchor.constraint(equalToConstant: 70),
+            logoImageView.widthAnchor.constraint(equalToConstant: 70),
 
             mainVectorView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 20),
             mainVectorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            mainVectorView.heightAnchor.constraint(equalToConstant: 180),
+            mainVectorView.heightAnchor.constraint(equalToConstant: 200),
             mainVectorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40),
             mainVectorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
 
-            titleLabel.topAnchor.constraint(equalTo: mainVectorView.bottomAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            titleLabel.topAnchor.constraint(equalTo: mainVectorView.bottomAnchor, constant: 30),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             subtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40),
             subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
 
-            phoneInputContainer.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 30),
-            phoneInputContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
-            phoneInputContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
-            phoneInputContainer.heightAnchor.constraint(equalToConstant: 60),
+            phoneInputContainer.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 40),
+            phoneInputContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            phoneInputContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            phoneInputContainer.heightAnchor.constraint(equalToConstant: 65),
 
-            countryCodeLabel.leadingAnchor.constraint(equalTo: phoneInputContainer.leadingAnchor, constant: 15),
-            countryCodeLabel.widthAnchor.constraint(equalToConstant: 40),
+            countryCodeLabel.leadingAnchor.constraint(equalTo: phoneInputContainer.leadingAnchor, constant: 16),
             countryCodeLabel.centerYAnchor.constraint(equalTo: phoneInputContainer.centerYAnchor),
+            countryCodeLabel.widthAnchor.constraint(equalToConstant: 80),
 
-            verticalDivider.leadingAnchor.constraint(equalTo: countryCodeLabel.trailingAnchor, constant: 10),
+            verticalDivider.leadingAnchor.constraint(equalTo: countryCodeLabel.trailingAnchor, constant: 12),
             verticalDivider.centerYAnchor.constraint(equalTo: phoneInputContainer.centerYAnchor),
             verticalDivider.widthAnchor.constraint(equalToConstant: 1),
-            verticalDivider.heightAnchor.constraint(equalToConstant: 24),
+            verticalDivider.heightAnchor.constraint(equalToConstant: 30),
 
-            phoneTextField.leadingAnchor.constraint(equalTo: verticalDivider.trailingAnchor, constant: 10),
-            phoneTextField.trailingAnchor.constraint(equalTo: phoneInputContainer.trailingAnchor, constant: -10),
+            phoneTextField.leadingAnchor.constraint(equalTo: verticalDivider.trailingAnchor, constant: 12),
+            phoneTextField.trailingAnchor.constraint(equalTo: phoneInputContainer.trailingAnchor, constant: -16),
             phoneTextField.centerYAnchor.constraint(equalTo: phoneInputContainer.centerYAnchor),
             phoneTextField.heightAnchor.constraint(equalTo: phoneInputContainer.heightAnchor),
 
-            otpTextField.topAnchor.constraint(equalTo: phoneInputContainer.bottomAnchor, constant: 15),
+            otpTextField.topAnchor.constraint(equalTo: phoneInputContainer.bottomAnchor, constant: 20),
             otpTextField.leadingAnchor.constraint(equalTo: phoneInputContainer.leadingAnchor),
             otpTextField.trailingAnchor.constraint(equalTo: phoneInputContainer.trailingAnchor),
-            otpTextField.heightAnchor.constraint(equalToConstant: 60),
+            otpTextField.heightAnchor.constraint(equalToConstant: 65),
 
             actionButton.leadingAnchor.constraint(equalTo: phoneInputContainer.leadingAnchor),
             actionButton.trailingAnchor.constraint(equalTo: phoneInputContainer.trailingAnchor),
-            actionButton.heightAnchor.constraint(equalToConstant: 55),
+            actionButton.heightAnchor.constraint(equalToConstant: 60),
             actionButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40),
 
             activityIndicator.centerXAnchor.constraint(equalTo: actionButton.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: actionButton.centerYAnchor),
         ])
 
-        actionButtonTopConstraint = actionButton.topAnchor.constraint(equalTo: phoneInputContainer.bottomAnchor, constant: 25)
+        actionButtonTopConstraint = actionButton.topAnchor.constraint(equalTo: phoneInputContainer.bottomAnchor, constant: 40)
         actionButtonTopConstraint?.isActive = true
-    }
-
-    private func startVectorAnimation() {
-        mainVectorView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        UIView.animate(withDuration: 0.8, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8) {
-            self.mainVectorView.transform = .identity
-        } completion: { _ in
-            UIView.animate(withDuration: 2.0, delay: 0, options: [.autoreverse, .repeat, .curveEaseInOut], animations: {
-                self.mainVectorView.transform = CGAffineTransform(translationX: 0, y: -15)
-            })
-        }
-    }
-
-    private func animateOTPField(show: Bool) {
-        guard show else { return }
-
-        actionButtonTopConstraint?.isActive = false
-        actionButtonTopConstraint = actionButton.topAnchor.constraint(equalTo: otpTextField.bottomAnchor, constant: 25)
-        actionButtonTopConstraint?.isActive = true
-
-        otpTextField.isHidden = false
-        otpTextField.alpha = 0
-        otpTextField.transform = CGAffineTransform(translationX: 0, y: -40).scaledBy(x: 0.9, y: 0.9)
-
-        UIView.transition(with: titleLabel, duration: 0.3, options: .transitionCrossDissolve) {
-            self.titleLabel.text = "OTP Sent Successfully"
-            self.subtitleLabel.text = "Almost there! Enter the 6-digit code sent to your mobile number."
-        }
-
-        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut) {
-            self.otpTextField.alpha = 1
-            self.otpTextField.transform = .identity
-            self.updateButtonStyle()
-            self.view.layoutIfNeeded()
-        } completion: { _ in
-            self.otpTextField.becomeFirstResponder()
-        }
-    }
-
-    private func updateButtonStyle() {
-        let isPhoneMode = otpTextField.isHidden
-        let count = isPhoneMode ? (phoneTextField.text?.count ?? 0) : (otpTextField.text?.count ?? 0)
-        let target = isPhoneMode ? 10 : 6
-
-        UIView.animate(withDuration: 0.3) {
-            self.actionButton.backgroundColor = (count == target) ? .systemGreen : .systemGray4
-        }
     }
 
     private func bindViewModel() {
@@ -302,28 +263,73 @@ final class LoginViewController: UIViewController {
 
         viewModel.onError = { [weak self] message in
             DispatchQueue.main.async {
-                guard let self = self else { return }
-                AlertManager.showAlert(on: self, type: .custom(message ?? "Something went wrong"))
+                guard let self = self, let message = message else { return }
+                // Use a professional alert
+                let alert = UIAlertController(title: "Oops!", message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Got it", style: .default))
+                self.present(alert, animated: true)
             }
         }
     }
 
-    @objc func handleLogin() {
+    // MARK: - Actions
+
+    @objc private func handleLogin() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+
         view.endEditing(true)
-        let isPhoneMode = otpTextField.isHidden
         let phoneText = phoneTextField.text ?? ""
         let otpText = otpTextField.text ?? ""
+        viewModel.handleMainButtonAction(phoneNumber: "+91\(phoneText)", otpCode: otpText)
+    }
 
-        if isPhoneMode && phoneText.count != 10 {
-            AlertManager.showAlert(on: self, type: .invalidPhone)
-            return
-        } else if !isPhoneMode && otpText.count != 6 {
-            AlertManager.showAlert(on: self, type: .invalidOTP)
-            return
+    private func animateOTPField(show: Bool) {
+        guard show else { return }
+
+        // Constraint animation
+        actionButtonTopConstraint?.isActive = false
+        actionButtonTopConstraint = actionButton.topAnchor.constraint(equalTo: otpTextField.bottomAnchor, constant: 30)
+        actionButtonTopConstraint?.isActive = true
+
+        otpTextField.isHidden = false
+
+        UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseInOut) {
+            self.otpTextField.alpha = 1
+            self.titleLabel.text = "OTP Sent Successfully"
+            self.subtitleLabel.text = "Almost there! Enter the 6-digit code sent to your mobile number."
+            self.phoneInputContainer.alpha = 0.5 // Dim the phone input
+            self.phoneInputContainer.isUserInteractionEnabled = false
+            self.view.layoutIfNeeded()
+            self.updateButtonStyle()
+        } completion: { _ in
+            self.otpTextField.becomeFirstResponder()
         }
+    }
 
-        let fullPhoneNumber = "+91\(phoneText)"
-        viewModel.handleMainButtonAction(phoneNumber: fullPhoneNumber, otpCode: otpText)
+    private func updateButtonStyle() {
+        let isPhoneMode = otpTextField.isHidden
+        let count = isPhoneMode ? (phoneTextField.text?.count ?? 0) : (otpTextField.text?.count ?? 0)
+        let target = isPhoneMode ? 10 : 6
+
+        let isEnabled = (count == target)
+
+        UIView.animate(withDuration: 0.3) {
+            self.actionButton.backgroundColor = isEnabled ? AppColor.primaryTeal : .systemGray4
+            self.actionButton.layer.shadowOpacity = isEnabled ? 0.3 : 0
+            self.actionButton.transform = isEnabled ? CGAffineTransform(scaleX: 1.02, y: 1.02) : .identity
+        }
+    }
+
+    private func startVectorAnimation() {
+        mainVectorView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 0.8, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8) {
+            self.mainVectorView.transform = .identity
+        } completion: { _ in
+            UIView.animate(withDuration: 2.0, delay: 0, options: [.autoreverse, .repeat, .curveEaseInOut], animations: {
+                self.mainVectorView.transform = CGAffineTransform(translationX: 0, y: -15)
+            })
+        }
     }
 
     private func setupKeyboardHandling() {
@@ -351,28 +357,27 @@ final class LoginViewController: UIViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
+
 extension LoginViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
 
-        let allowed = CharacterSet.decimalDigits
-        if !string.isEmpty && string.rangeOfCharacter(from: allowed.inverted) != nil { return false }
+        // Digital only check
+        if !string.isEmpty && CharacterSet.decimalDigits.inverted.contains(string.unicodeScalars.first!) { return false }
 
-        if textField == phoneTextField {
-            if updatedText.count <= 10 {
-                textField.text = updatedText
-                updateButtonStyle()
-                return false
-            }
-        } else if textField == otpTextField {
-            if updatedText.count <= 6 {
-                textField.text = updatedText
-                updateButtonStyle()
-                return false
-            }
+        let limit = (textField == phoneTextField) ? 10 : 6
+
+        if updatedText.count <= limit {
+            textField.text = updatedText
+            updateButtonStyle()
+
+            // Highlight border on active typing
+            textField.superview?.layer.borderColor = updatedText.count == limit ? AppColor.primaryTeal.cgColor : UIColor.systemGray6.cgColor
         }
+
         return false
     }
 }
