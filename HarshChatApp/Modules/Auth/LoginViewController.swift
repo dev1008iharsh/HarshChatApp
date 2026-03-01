@@ -4,8 +4,6 @@ final class LoginViewController: UIViewController {
     private let viewModel: LoginViewModel
     private var actionButtonTopConstraint: NSLayoutConstraint?
 
-    // MARK: - UI Elements
-
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
@@ -120,14 +118,11 @@ final class LoginViewController: UIViewController {
         button.backgroundColor = .systemGray4
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
-        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-
-        // Shadow for premium look
         button.layer.shadowColor = AppColor.primaryTeal.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
         button.layer.shadowRadius = 8
         button.layer.shadowOpacity = 0
-
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -140,16 +135,12 @@ final class LoginViewController: UIViewController {
         return ai
     }()
 
-    // MARK: - Init
-
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -264,7 +255,6 @@ final class LoginViewController: UIViewController {
         viewModel.onError = { [weak self] message in
             DispatchQueue.main.async {
                 guard let self = self, let message = message else { return }
-                // Use a professional alert
                 let alert = UIAlertController(title: "Oops!", message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Got it", style: .default))
                 self.present(alert, animated: true)
@@ -272,12 +262,8 @@ final class LoginViewController: UIViewController {
         }
     }
 
-    // MARK: - Actions
-
     @objc private func handleLogin() {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         view.endEditing(true)
         let phoneText = phoneTextField.text ?? ""
         let otpText = otpTextField.text ?? ""
@@ -286,19 +272,16 @@ final class LoginViewController: UIViewController {
 
     private func animateOTPField(show: Bool) {
         guard show else { return }
-
-        // Constraint animation
         actionButtonTopConstraint?.isActive = false
         actionButtonTopConstraint = actionButton.topAnchor.constraint(equalTo: otpTextField.bottomAnchor, constant: 30)
         actionButtonTopConstraint?.isActive = true
-
         otpTextField.isHidden = false
 
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseInOut) {
             self.otpTextField.alpha = 1
             self.titleLabel.text = "OTP Sent Successfully"
             self.subtitleLabel.text = "Almost there! Enter the 6-digit code sent to your mobile number."
-            self.phoneInputContainer.alpha = 0.5 // Dim the phone input
+            self.phoneInputContainer.alpha = 0.5
             self.phoneInputContainer.isUserInteractionEnabled = false
             self.view.layoutIfNeeded()
             self.updateButtonStyle()
@@ -311,7 +294,6 @@ final class LoginViewController: UIViewController {
         let isPhoneMode = otpTextField.isHidden
         let count = isPhoneMode ? (phoneTextField.text?.count ?? 0) : (otpTextField.text?.count ?? 0)
         let target = isPhoneMode ? 10 : 6
-
         let isEnabled = (count == target)
 
         UIView.animate(withDuration: 0.3) {
@@ -326,17 +308,16 @@ final class LoginViewController: UIViewController {
         UIView.animate(withDuration: 0.8, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8) {
             self.mainVectorView.transform = .identity
         } completion: { _ in
-            UIView.animate(withDuration: 2.0, delay: 0, options: [.autoreverse, .repeat, .curveEaseInOut], animations: {
+            UIView.animate(withDuration: 2.0, delay: 0, options: [.autoreverse, .repeat, .curveEaseInOut]) {
                 self.mainVectorView.transform = CGAffineTransform(translationX: 0, y: -15)
-            })
+            }
         }
     }
 
     private func setupKeyboardHandling() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
 
     @objc private func dismissKeyboard() { view.endEditing(true) }
@@ -357,27 +338,20 @@ final class LoginViewController: UIViewController {
     }
 }
 
-// MARK: - UITextFieldDelegate
-
 extension LoginViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-
-        // Digital only check
+        
         if !string.isEmpty && CharacterSet.decimalDigits.inverted.contains(string.unicodeScalars.first!) { return false }
 
         let limit = (textField == phoneTextField) ? 10 : 6
-
         if updatedText.count <= limit {
             textField.text = updatedText
             updateButtonStyle()
-
-            // Highlight border on active typing
             textField.superview?.layer.borderColor = updatedText.count == limit ? AppColor.primaryTeal.cgColor : UIColor.systemGray6.cgColor
         }
-
         return false
     }
 }

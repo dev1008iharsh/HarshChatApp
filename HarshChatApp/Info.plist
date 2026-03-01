@@ -42,5 +42,7 @@
 	<array>
 		<string>com.googleusercontent.apps.49439849283-2r86vli6vcm5segteb8bgqbi3cips8tq</string>
 	</array>
+	<key>NSContactsUsageDescription</key>
+	<string>&quot;HarshChat uses your contacts to find friends who are already on the app and help you start new conversations quickly. We only use phone numbers for matching and do not store your contacts permanently.</string>
 </dict>
 </plist>

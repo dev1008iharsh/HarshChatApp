@@ -5,8 +5,6 @@ import UIKit
 final class EditProfileViewController: UIViewController {
     private let viewModel: EditProfileViewModel
 
-    // MARK: - UI Elements
-
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.alwaysBounceVertical = true
@@ -57,16 +55,12 @@ final class EditProfileViewController: UIViewController {
         return sc
     }()
 
-    // MARK: - Init
-
     init(viewModel: EditProfileViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) { fatalError() }
-
-    // MARK: - Lifecycle
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,15 +76,13 @@ final class EditProfileViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
 
-        contentView.addSubview(profileImageView)
-        contentView.addSubview(editIconButton)
+        [profileImageView, editIconButton, genderSegment].forEach { contentView.addSubview($0) }
 
         let stackView = UIStackView(arrangedSubviews: [nameField, bioField, emailField, phoneField])
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
-        contentView.addSubview(genderSegment)
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -127,7 +119,12 @@ final class EditProfileViewController: UIViewController {
     private func setupNavigation() {
         title = "Edit Profile"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(didTapCancel))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Update", style: .done, target: self, action: #selector(didTapUpdate))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Update",
+            style: .prominent,
+            target: self,
+            action: #selector(didTapUpdate)
+        )
         navigationController?.navigationBar.tintColor = AppColor.primaryTeal
     }
 
@@ -136,7 +133,7 @@ final class EditProfileViewController: UIViewController {
         bioField.textField.text = viewModel.bio
         emailField.textField.text = viewModel.email
         phoneField.textField.text = viewModel.phone
-        phoneField.textField.isEnabled = false // Phone can't be edited
+        phoneField.textField.isEnabled = false
 
         if let urlString = viewModel.profileImageUrl, let url = URL(string: urlString) {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.circle.fill"))
@@ -161,8 +158,13 @@ final class EditProfileViewController: UIViewController {
 
         viewModel.onError = { [weak self] msg in
             DispatchQueue.main.async {
-                AlertManager.showAlert(title: "Error", message: msg, vc: self!)
+                guard let self = self else { return }
+                AlertManager.showAlert(title: "Error", message: msg, vc: self)
             }
+        }
+
+        viewModel.onUpdateSuccess = { [weak self] in
+            DispatchQueue.main.async { self?.dismiss(animated: true) }
         }
     }
 
@@ -182,15 +184,9 @@ final class EditProfileViewController: UIViewController {
         viewModel.email = emailField.textField.text ?? ""
         viewModel.gender = genderSegment.titleForSegment(at: genderSegment.selectedSegmentIndex) ?? "Other"
         viewModel.profileImageData = profileImageView.image?.jpegData(compressionQuality: 0.7)
-
-        viewModel.onUpdateSuccess = { [weak self] in
-            DispatchQueue.main.async { self?.dismiss(animated: true) }
-        }
         viewModel.saveProfile()
     }
 }
-
-// MARK: - PHPickerDelegate
 
 extension EditProfileViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -201,8 +197,6 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
         }
     }
 }
-
-// MARK: - Custom Input UI Component
 
 private class CustomInputField: UIView {
     let textField = UITextField()
@@ -220,7 +214,10 @@ private class CustomInputField: UIView {
         let line = UIView()
         line.backgroundColor = .systemGray5
 
-        [label, textField, line].forEach { addSubview($0); $0.translatesAutoresizingMaskIntoConstraints = false }
+        [label, textField, line].forEach {
+            addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor),
@@ -235,6 +232,5 @@ private class CustomInputField: UIView {
             line.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
-
     required init?(coder: NSCoder) { fatalError() }
 }

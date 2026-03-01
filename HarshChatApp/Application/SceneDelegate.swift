@@ -6,10 +6,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-
-        let window = UIWindow(windowScene: windowScene)
-        self.window = window
-
+        window = UIWindow(windowScene: windowScene)
         checkAuthentication()
     }
 
@@ -21,11 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
 
-    // MARK: - Navigation Methods
-
     func showLogin() {
         let viewModel = LoginViewModel()
-
         viewModel.onSuccess = { [weak self] in
             self?.showMainTab()
         }
@@ -33,47 +27,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let loginVC = LoginViewController(viewModel: viewModel)
         let nav = UINavigationController(rootViewController: loginVC)
         nav.setNavigationBarHidden(true, animated: false)
-
         setRootViewController(nav, direction: .transitionFlipFromLeft)
     }
 
     func showMainTab() {
         let tabBar = UITabBarController()
 
-        // 1. Chat Tab
-        let chatVC = UIViewController()
+        let chatVC = ConversationListViewController()
         chatVC.view.backgroundColor = .systemBackground
         chatVC.title = "Chats"
         let chatNav = UINavigationController(rootViewController: chatVC)
         chatNav.tabBarItem = UITabBarItem(title: "Chats", image: UIImage(systemName: "message.fill"), tag: 0)
 
-        // 2. Settings Tab ✅
-        // અહીં આપણે ખાતરી કરીશું કે ViewModel પ્રોપરલી ઇન્જેક્ટ થાય છે
         let settingsVM = SettingsViewModel()
         let settingsVC = SettingsViewController(viewModel: settingsVM)
         let settingsNav = UINavigationController(rootViewController: settingsVC)
         settingsNav.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), tag: 1)
 
-        // Tab Bar Configuration
         tabBar.viewControllers = [chatNav, settingsNav]
-        tabBar.tabBar.tintColor = AppColor.primaryTeal // તારો બ્રાન્ડ કલર 🟢
+        tabBar.tabBar.tintColor = AppColor.primaryTeal
         tabBar.tabBar.backgroundColor = .systemBackground
 
         setRootViewController(tabBar, direction: .transitionFlipFromRight)
     }
 
-    private func setRootViewController(_ vc: UIViewController, direction: UIView.AnimationOptions = .transitionCrossDissolve) {
-        // ખાતરી કરો કે વિન્ડો અસ્તિત્વમાં છે
+    private func setRootViewController(_ vc: UIViewController, direction: UIView.AnimationOptions) {
         guard let window = window else { return }
-
         window.rootViewController = vc
         window.makeKeyAndVisible()
 
-        // ✨ 2026 Smooth Transition
-        UIView.transition(with: window,
-                          duration: 0.5,
-                          options: direction,
-                          animations: nil,
-                          completion: nil)
+        UIView.transition(with: window, duration: 0.5, options: direction, animations: nil)
     }
 }

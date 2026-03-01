@@ -9,15 +9,19 @@ struct User: Codable {
     var profileImageUrl: String?
     var gender: String
     var createdAt: Double
-
-    init(uid: String, phoneNumber: String, name: String = "New User", bio: String = "Hey there! I am using HarshChat 🚀") {
+    init(uid: String,
+         phoneNumber: String,
+         name: String = "New User",
+         bio: String = "Hey there! I am using HarshChat 🚀",
+         profileImageUrl: String? = "") {
+        
         self.uid = uid
         self.phoneNumber = phoneNumber
         self.name = name
         self.bio = bio
-        email = ""
-        profileImageUrl = ""
-        gender = "Other"
-        createdAt = Date().timeIntervalSince1970
+        self.email = ""
+        self.profileImageUrl = profileImageUrl 
+        self.gender = "Other"
+        self.createdAt = Date().timeIntervalSince1970
     }
 }
