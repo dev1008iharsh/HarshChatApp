@@ -6,36 +6,67 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		04C9B98B2F53FB4A00D427FA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98A2F53FB4A00D427FA /* FirebaseAnalytics */; };
+		04C9B98D2F53FB4A00D427FA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98C2F53FB4A00D427FA /* FirebaseAuth */; };
+		04C9B98F2F53FB4A00D427FA /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98E2F53FB4A00D427FA /* FirebaseDatabase */; };
+		04C9B9912F53FB4A00D427FA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B9902F53FB4A00D427FA /* FirebaseFirestore */; };
+		04C9B9932F53FB4A00D427FA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B9922F53FB4A00D427FA /* FirebaseRemoteConfig */; };
+		04C9B9952F53FB4A00D427FA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B9942F53FB4A00D427FA /* FirebaseStorage */; };
+		04C9B9B12F53FE6800D427FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9A82F53FE6800D427FA /* AppDelegate.swift */; };
+		04C9B9B22F53FE6800D427FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9AE2F53FE6800D427FA /* SceneDelegate.swift */; };
+		04C9B9B42F53FE6800D427FA /* GoogleSansCode-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A22F53FE6800D427FA /* GoogleSansCode-Bold.ttf */; };
+		04C9B9B52F53FE6800D427FA /* GoogleSansCode-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A32F53FE6800D427FA /* GoogleSansCode-Light.ttf */; };
+		04C9B9B62F53FE6800D427FA /* GoogleSansCode-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A42F53FE6800D427FA /* GoogleSansCode-Medium.ttf */; };
+		04C9B9B72F53FE6800D427FA /* GoogleSansCode-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A52F53FE6800D427FA /* GoogleSansCode-Regular.ttf */; };
+		04C9B9B82F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A62F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf */; };
+		04C9B9B92F53FE6800D427FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A92F53FE6800D427FA /* Assets.xcassets */; };
+		04C9B9BC2F53FE6800D427FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9AD2F53FE6800D427FA /* LaunchScreen.storyboard */; };
+		04C9B9C52F5400B000D427FA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9C42F5400AF00D427FA /* AppCoordinator.swift */; };
+		04C9B9CB2F54011A00D427FA /* AppFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9CA2F54011A00D427FA /* AppFont.swift */; };
+		04C9B9CD2F54012500D427FA /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9CC2F54012400D427FA /* AppColor.swift */; };
+		04C9B9D32F54031200D427FA /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9D22F54031100D427FA /* LoginCoordinator.swift */; };
+		04C9B9D52F54032200D427FA /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9D42F54032200D427FA /* LoginViewModel.swift */; };
+		04C9B9DA2F54040000D427FA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9D92F54040000D427FA /* LoginViewController.swift */; };
+		04C9B9DC2F54065600D427FA /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9DB2F54065500D427FA /* UITextField+Ext.swift */; };
+		04C9B9E02F540C9B00D427FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9DF2F540C9B00D427FA /* GoogleService-Info.plist */; };
+		04C9B9E22F54164D00D427FA /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9E12F54164600D427FA /* AlertManager.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		04C9B96F2F53F87500D427FA /* HarshChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarshChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04C9B9A22F53FE6800D427FA /* GoogleSansCode-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Bold.ttf"; sourceTree = "<group>"; };
+		04C9B9A32F53FE6800D427FA /* GoogleSansCode-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Light.ttf"; sourceTree = "<group>"; };
+		04C9B9A42F53FE6800D427FA /* GoogleSansCode-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Medium.ttf"; sourceTree = "<group>"; };
+		04C9B9A52F53FE6800D427FA /* GoogleSansCode-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Regular.ttf"; sourceTree = "<group>"; };
+		04C9B9A62F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-SemiBold.ttf"; sourceTree = "<group>"; };
+		04C9B9A82F53FE6800D427FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		04C9B9A92F53FE6800D427FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		04C9B9AB2F53FE6800D427FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04C9B9AC2F53FE6800D427FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		04C9B9AE2F53FE6800D427FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		04C9B9C42F5400AF00D427FA /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		04C9B9CA2F54011A00D427FA /* AppFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFont.swift; sourceTree = "<group>"; };
+		04C9B9CC2F54012400D427FA /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
+		04C9B9D22F54031100D427FA /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
+		04C9B9D42F54032200D427FA /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		04C9B9D92F54040000D427FA /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		04C9B9DB2F54065500D427FA /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
+		04C9B9DF2F540C9B00D427FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		04C9B9E12F54164600D427FA /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		04C9B9812F53F87500D427FA /* Exceptions for "HarshChatApp" folder in "HarshChatApp" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 04C9B96E2F53F87500D427FA /* HarshChatApp */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		04C9B9712F53F87500D427FA /* HarshChatApp */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				04C9B9812F53F87500D427FA /* Exceptions for "HarshChatApp" folder in "HarshChatApp" target */,
-			);
-			path = HarshChatApp;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		04C9B96C2F53F87500D427FA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C9B98F2F53FB4A00D427FA /* FirebaseDatabase in Frameworks */,
+				04C9B9912F53FB4A00D427FA /* FirebaseFirestore in Frameworks */,
+				04C9B98B2F53FB4A00D427FA /* FirebaseAnalytics in Frameworks */,
+				04C9B98D2F53FB4A00D427FA /* FirebaseAuth in Frameworks */,
+				04C9B9932F53FB4A00D427FA /* FirebaseRemoteConfig in Frameworks */,
+				04C9B9952F53FB4A00D427FA /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,7 +76,7 @@
 		04C9B9662F53F87500D427FA = {
 			isa = PBXGroup;
 			children = (
-				04C9B9712F53F87500D427FA /* HarshChatApp */,
+				04C9B9B02F53FE6800D427FA /* HarshChatApp */,
 				04C9B9702F53F87500D427FA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +87,112 @@
 				04C9B96F2F53F87500D427FA /* HarshChatApp.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		04C9B9A72F53FE6800D427FA /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9A22F53FE6800D427FA /* GoogleSansCode-Bold.ttf */,
+				04C9B9A32F53FE6800D427FA /* GoogleSansCode-Light.ttf */,
+				04C9B9A42F53FE6800D427FA /* GoogleSansCode-Medium.ttf */,
+				04C9B9A52F53FE6800D427FA /* GoogleSansCode-Regular.ttf */,
+				04C9B9A62F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		04C9B9B02F53FE6800D427FA /* HarshChatApp */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9D02F54016000D427FA /* Models */,
+				04C9B9CF2F54015800D427FA /* Modules */,
+				04C9B9CE2F54015300D427FA /* Managers */,
+				04C9B9C62F5400BD00D427FA /* Core */,
+				04C9B9C32F5400A600D427FA /* Application */,
+				04C9B9A72F53FE6800D427FA /* Fonts */,
+				04C9B9A92F53FE6800D427FA /* Assets.xcassets */,
+				04C9B9AB2F53FE6800D427FA /* Info.plist */,
+				04C9B9DF2F540C9B00D427FA /* GoogleService-Info.plist */,
+				04C9B9AD2F53FE6800D427FA /* LaunchScreen.storyboard */,
+			);
+			path = HarshChatApp;
+			sourceTree = "<group>";
+		};
+		04C9B9C32F5400A600D427FA /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9A82F53FE6800D427FA /* AppDelegate.swift */,
+				04C9B9AE2F53FE6800D427FA /* SceneDelegate.swift */,
+				04C9B9C42F5400AF00D427FA /* AppCoordinator.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		04C9B9C62F5400BD00D427FA /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9C92F5400CF00D427FA /* Extensions */,
+				04C9B9C82F5400C900D427FA /* Constants */,
+				04C9B9C72F5400C300D427FA /* Theme */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		04C9B9C72F5400C300D427FA /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9CC2F54012400D427FA /* AppColor.swift */,
+				04C9B9CA2F54011A00D427FA /* AppFont.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		04C9B9C82F5400C900D427FA /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		04C9B9C92F5400CF00D427FA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9DB2F54065500D427FA /* UITextField+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		04C9B9CE2F54015300D427FA /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9E12F54164600D427FA /* AlertManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		04C9B9CF2F54015800D427FA /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9D12F54030400D427FA /* Auth */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		04C9B9D02F54016000D427FA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		04C9B9D12F54030400D427FA /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				04C9B9D92F54040000D427FA /* LoginViewController.swift */,
+				04C9B9D42F54032200D427FA /* LoginViewModel.swift */,
+				04C9B9D22F54031100D427FA /* LoginCoordinator.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -73,11 +210,14 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				04C9B9712F53F87500D427FA /* HarshChatApp */,
-			);
 			name = HarshChatApp;
 			packageProductDependencies = (
+				04C9B98A2F53FB4A00D427FA /* FirebaseAnalytics */,
+				04C9B98C2F53FB4A00D427FA /* FirebaseAuth */,
+				04C9B98E2F53FB4A00D427FA /* FirebaseDatabase */,
+				04C9B9902F53FB4A00D427FA /* FirebaseFirestore */,
+				04C9B9922F53FB4A00D427FA /* FirebaseRemoteConfig */,
+				04C9B9942F53FB4A00D427FA /* FirebaseStorage */,
 			);
 			productName = HarshChatApp;
 			productReference = 04C9B96F2F53F87500D427FA /* HarshChatApp.app */;
@@ -107,6 +247,9 @@
 			);
 			mainGroup = 04C9B9662F53F87500D427FA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 04C9B9702F53F87500D427FA /* Products */;
 			projectDirPath = "";
@@ -122,6 +265,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C9B9B42F53FE6800D427FA /* GoogleSansCode-Bold.ttf in Resources */,
+				04C9B9E02F540C9B00D427FA /* GoogleService-Info.plist in Resources */,
+				04C9B9B52F53FE6800D427FA /* GoogleSansCode-Light.ttf in Resources */,
+				04C9B9B62F53FE6800D427FA /* GoogleSansCode-Medium.ttf in Resources */,
+				04C9B9B72F53FE6800D427FA /* GoogleSansCode-Regular.ttf in Resources */,
+				04C9B9B82F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf in Resources */,
+				04C9B9B92F53FE6800D427FA /* Assets.xcassets in Resources */,
+				04C9B9BC2F53FE6800D427FA /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,10 +283,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C9B9D32F54031200D427FA /* LoginCoordinator.swift in Sources */,
+				04C9B9DC2F54065600D427FA /* UITextField+Ext.swift in Sources */,
+				04C9B9E22F54164D00D427FA /* AlertManager.swift in Sources */,
+				04C9B9C52F5400B000D427FA /* AppCoordinator.swift in Sources */,
+				04C9B9CB2F54011A00D427FA /* AppFont.swift in Sources */,
+				04C9B9B12F53FE6800D427FA /* AppDelegate.swift in Sources */,
+				04C9B9DA2F54040000D427FA /* LoginViewController.swift in Sources */,
+				04C9B9B22F53FE6800D427FA /* SceneDelegate.swift in Sources */,
+				04C9B9CD2F54012500D427FA /* AppColor.swift in Sources */,
+				04C9B9D52F54032200D427FA /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		04C9B9AD2F53FE6800D427FA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04C9B9AC2F53FE6800D427FA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		04C9B9832F53F87500D427FA /* Debug */ = {
@@ -149,10 +321,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HarshChatApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -162,7 +333,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -181,10 +352,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HarshChatApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -194,7 +364,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -345,6 +515,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		04C9B98A2F53FB4A00D427FA /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		04C9B98C2F53FB4A00D427FA /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		04C9B98E2F53FB4A00D427FA /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		04C9B9902F53FB4A00D427FA /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		04C9B9922F53FB4A00D427FA /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		04C9B9942F53FB4A00D427FA /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C9B9892F53FB4A00D427FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 04C9B9672F53F87500D427FA /* Project object */;
 }

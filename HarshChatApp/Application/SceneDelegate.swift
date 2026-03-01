@@ -8,15 +8,22 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
-
+        var appCoordinator: AppCoordinator? // Keeping a strong reference to the coordinator
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        // 1. Create a WindowScene
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        // 2. Initialize the UIWindow with the windowScene
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
+        
+        // 3. Initialize the AppCoordinator and start it
+        // This will handle whether to show Login or Chat screen
+        appCoordinator = AppCoordinator(window: window)
+        appCoordinator?.start()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -46,7 +53,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-
