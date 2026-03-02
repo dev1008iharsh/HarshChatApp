@@ -18,6 +18,7 @@
 		04325D652F545A5600F7D35C /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D642F545A5500F7D35C /* EditProfileViewModel.swift */; };
 		04325D672F5461D200F7D35C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D662F5461D100F7D35C /* User.swift */; };
 		04325D692F5462B400F7D35C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D682F5462B300F7D35C /* AuthService.swift */; };
+		0446EB372F558C6E0036EA84 /* ProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0446EB362F558C6D0036EA84 /* ProfileHeaderCell.swift */; };
 		04C9B98B2F53FB4A00D427FA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98A2F53FB4A00D427FA /* FirebaseAnalytics */; };
 		04C9B98D2F53FB4A00D427FA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98C2F53FB4A00D427FA /* FirebaseAuth */; };
 		04C9B98F2F53FB4A00D427FA /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98E2F53FB4A00D427FA /* FirebaseDatabase */; };
@@ -39,7 +40,6 @@
 		04C9B9DC2F54065600D427FA /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9DB2F54065500D427FA /* UITextField+Ext.swift */; };
 		04C9B9E02F540C9B00D427FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9DF2F540C9B00D427FA /* GoogleService-Info.plist */; };
 		04C9B9E22F54164D00D427FA /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9E12F54164600D427FA /* AlertManager.swift */; };
-		04D26ED32F54CE0F00EB2FAB /* ImageZoomViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26ED22F54CE0D00EB2FAB /* ImageZoomViewer.swift */; };
 		04D26ED92F54D42100EB2FAB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26ED82F54D42100EB2FAB /* Message.swift */; };
 		04D26EDB2F54D42800EB2FAB /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26EDA2F54D42800EB2FAB /* ChatUser.swift */; };
 		04D26EDD2F54D43100EB2FAB /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26EDC2F54D43000EB2FAB /* Conversation.swift */; };
@@ -67,6 +67,7 @@
 		04325D642F545A5500F7D35C /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		04325D662F5461D100F7D35C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		04325D682F5462B300F7D35C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		0446EB362F558C6D0036EA84 /* ProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCell.swift; sourceTree = "<group>"; };
 		04C9B96F2F53F87500D427FA /* HarshChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarshChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9B9A22F53FE6800D427FA /* GoogleSansCode-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Bold.ttf"; sourceTree = "<group>"; };
 		04C9B9A32F53FE6800D427FA /* GoogleSansCode-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoogleSansCode-Light.ttf"; sourceTree = "<group>"; };
@@ -84,7 +85,6 @@
 		04C9B9DB2F54065500D427FA /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
 		04C9B9DF2F540C9B00D427FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04C9B9E12F54164600D427FA /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
-		04D26ED22F54CE0D00EB2FAB /* ImageZoomViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomViewer.swift; sourceTree = "<group>"; };
 		04D26ED82F54D42100EB2FAB /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		04D26EDA2F54D42800EB2FAB /* ChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUser.swift; sourceTree = "<group>"; };
 		04D26EDC2F54D43000EB2FAB /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
@@ -149,6 +149,7 @@
 		04325D572F5459F000F7D35C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0446EB362F558C6D0036EA84 /* ProfileHeaderCell.swift */,
 				04325CF32F5449C000F7D35C /* SettingsViewController.swift */,
 			);
 			path = View;
@@ -178,20 +179,12 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		04325D5B2F5459FC00F7D35C /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		04325D5C2F5459FC00F7D35C /* Profile */ = {
 			isa = PBXGroup;
 			children = (
 				04325D612F545A3B00F7D35C /* Services */,
 				04325D592F5459FC00F7D35C /* ViewModel */,
 				04325D5A2F5459FC00F7D35C /* View */,
-				04325D5B2F5459FC00F7D35C /* Model */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -261,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				04C9B9C92F5400CF00D427FA /* Extensions */,
-				04C9B9C82F5400C900D427FA /* Constants */,
 				04C9B9C72F5400C300D427FA /* Theme */,
 			);
 			path = Core;
@@ -276,13 +268,6 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
-		04C9B9C82F5400C900D427FA /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Constants;
-			sourceTree = "<group>";
-		};
 		04C9B9C92F5400CF00D427FA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,7 +280,6 @@
 			isa = PBXGroup;
 			children = (
 				04D26EF72F54E0C000EB2FAB /* ImageViewerManager.swift */,
-				04D26ED22F54CE0D00EB2FAB /* ImageZoomViewer.swift */,
 				0426EE162F547E4700AB494F /* LoaderManager.swift */,
 				04C9B9E12F54164600D427FA /* AlertManager.swift */,
 			);
@@ -466,7 +450,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04D26ED32F54CE0F00EB2FAB /* ImageZoomViewer.swift in Sources */,
 				04325D632F545A4A00F7D35C /* FirebaseProfileService.swift in Sources */,
 				04325D652F545A5600F7D35C /* EditProfileViewModel.swift in Sources */,
 				04C9B9DC2F54065600D427FA /* UITextField+Ext.swift in Sources */,
@@ -477,6 +460,7 @@
 				04C9B9E22F54164D00D427FA /* AlertManager.swift in Sources */,
 				04325CF22F5449BC00F7D35C /* SettingsViewModel.swift in Sources */,
 				04D26EDB2F54D42800EB2FAB /* ChatUser.swift in Sources */,
+				0446EB372F558C6E0036EA84 /* ProfileHeaderCell.swift in Sources */,
 				04325D672F5461D200F7D35C /* User.swift in Sources */,
 				04325CED2F54427D00F7D35C /* LoginViewModel.swift in Sources */,
 				04325CF42F5449C100F7D35C /* SettingsViewController.swift in Sources */,
@@ -524,10 +508,16 @@
 				DEVELOPMENT_TEAM = 87M7TK5K4U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HarshChatApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take and send photos in chat.";
+				INFOPLIST_KEY_NSContactsUsageDescription = "\"HarshChat uses your contacts to find friends who are already on the app and help you start new conversations quickly. We only use phone numbers for matching and do not store your contacts permanently.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need permission to save images from chat to your gallery.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photos so you can share them with your friends.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -555,10 +545,16 @@
 				DEVELOPMENT_TEAM = 87M7TK5K4U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HarshChatApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take and send photos in chat.";
+				INFOPLIST_KEY_NSContactsUsageDescription = "\"HarshChat uses your contacts to find friends who are already on the app and help you start new conversations quickly. We only use phone numbers for matching and do not store your contacts permanently.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need permission to save images from chat to your gallery.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photos so you can share them with your friends.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

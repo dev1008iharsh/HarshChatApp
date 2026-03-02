@@ -1,8 +1,25 @@
+//
+//  LoginViewController.swift
+//  HarshChatApp
+//
+//  Created by Harsh on 01/03/26.
+//  🌐 Portfolio → https://dev1008iharsh.github.io/
+//  💼 LinkedIn → https://www.linkedin.com/in/dev1008iharsh/
+//  📦 GitHub Repositories → https://github.com/dev1008iharsh?tab=repositories
+//
+
 import UIKit
 
+// MARK: - LoginViewController
+
+/// UI for handling phone number input and OTP verification.
 final class LoginViewController: UIViewController {
+    // MARK: - Properties
+
     private let viewModel: LoginViewModel
     private var actionButtonTopConstraint: NSLayoutConstraint?
+
+    // MARK: - UI Components
 
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -20,6 +37,7 @@ final class LoginViewController: UIViewController {
 
     private let logoImageView: UIImageView = {
         let iv = UIImageView()
+        iv.tintColor = .systemGray4
         iv.image = UIImage(named: "app_logo")
         iv.contentMode = .scaleAspectFit
         iv.layer.cornerRadius = 16
@@ -30,6 +48,7 @@ final class LoginViewController: UIViewController {
 
     private let mainVectorView: UIImageView = {
         let iv = UIImageView()
+        iv.tintColor = .systemGray4
         iv.image = UIImage(named: "login_vector")
         iv.contentMode = .scaleAspectFit
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -135,12 +154,16 @@ final class LoginViewController: UIViewController {
         return ai
     }()
 
+    // MARK: - Initializers
+
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,6 +173,9 @@ final class LoginViewController: UIViewController {
         startVectorAnimation()
     }
 
+    // MARK: - UI Setup
+
+    /// Configures the main view and subviews
     private func setupUI() {
         view.backgroundColor = AppColor.background
         phoneTextField.delegate = self
@@ -168,6 +194,7 @@ final class LoginViewController: UIViewController {
         setupConstraints()
     }
 
+    /// Layout constraints for all UI elements
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -237,8 +264,12 @@ final class LoginViewController: UIViewController {
         actionButtonTopConstraint?.isActive = true
     }
 
+    // MARK: - ViewModel Binding
+
+    /// Observes ViewModel updates to sync UI state
     private func bindViewModel() {
         viewModel.onStateChange = { [weak self] isSent in
+            print("📲 [Debug] Flow: OTP state changed to \(isSent)")
             DispatchQueue.main.async { self?.animateOTPField(show: isSent) }
         }
 
@@ -255,13 +286,15 @@ final class LoginViewController: UIViewController {
         viewModel.onError = { [weak self] message in
             DispatchQueue.main.async {
                 guard let self = self, let message = message else { return }
-                let alert = UIAlertController(title: "Oops!", message: message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Got it", style: .default))
-                self.present(alert, animated: true)
+                AlertManager
+                    .showAlert(title: "Oops!", message: message, vc: self)
             }
         }
     }
 
+    // MARK: - Actions
+
+    /// Triggers login logic in ViewModel
     @objc private func handleLogin() {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         view.endEditing(true)
@@ -270,6 +303,9 @@ final class LoginViewController: UIViewController {
         viewModel.handleMainButtonAction(phoneNumber: "+91\(phoneText)", otpCode: otpText)
     }
 
+    // MARK: - Animations
+
+    /// Shows the OTP input field with spring animation
     private func animateOTPField(show: Bool) {
         guard show else { return }
         actionButtonTopConstraint?.isActive = false
@@ -290,6 +326,7 @@ final class LoginViewController: UIViewController {
         }
     }
 
+    /// Visual feedback for button states
     private func updateButtonStyle() {
         let isPhoneMode = otpTextField.isHidden
         let count = isPhoneMode ? (phoneTextField.text?.count ?? 0) : (otpTextField.text?.count ?? 0)
@@ -303,6 +340,7 @@ final class LoginViewController: UIViewController {
         }
     }
 
+    /// Entrance animation for the vector image
     private func startVectorAnimation() {
         mainVectorView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(withDuration: 0.8, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8) {
@@ -313,6 +351,8 @@ final class LoginViewController: UIViewController {
             }
         }
     }
+
+    // MARK: - Keyboard Handling
 
     private func setupKeyboardHandling() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -338,12 +378,15 @@ final class LoginViewController: UIViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
+
 extension LoginViewController: UITextFieldDelegate {
+    /// Validates and limits input for phone/OTP fields
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
+
         if !string.isEmpty && CharacterSet.decimalDigits.inverted.contains(string.unicodeScalars.first!) { return false }
 
         let limit = (textField == phoneTextField) ? 10 : 6

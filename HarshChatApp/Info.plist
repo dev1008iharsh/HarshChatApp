@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSCameraUsageDescription</key>
-    <string>We need access to your camera so you can take and send photos in chat.</string>
-
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>We need permission to save images from chat to your gallery.</string>
-
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>We need access to your photos so you can share them with your friends.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -20,6 +12,10 @@
 				<string>com.googleusercontent.apps.49439849283-2r86vli6vcm5segteb8bgqbi3cips8tq</string>
 			</array>
 		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>com.googleusercontent.apps.49439849283-2r86vli6vcm5segteb8bgqbi3cips8tq</string>
 	</array>
 	<key>UIAppFonts</key>
 	<array>
@@ -46,11 +42,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>com.googleusercontent.apps.49439849283-2r86vli6vcm5segteb8bgqbi3cips8tq</string>
-	</array>
-	<key>NSContactsUsageDescription</key>
-	<string>&quot;HarshChat uses your contacts to find friends who are already on the app and help you start new conversations quickly. We only use phone numbers for matching and do not store your contacts permanently.</string>
 </dict>
 </plist>

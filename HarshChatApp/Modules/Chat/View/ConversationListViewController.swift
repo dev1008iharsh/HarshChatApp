@@ -1,39 +1,61 @@
+//
+//  ConversationListViewController.swift
+//  HarshChatApp
+//
+//  Created by Harsh on 02/03/26.
+//  🌐 Portfolio → https://dev1008iharsh.github.io/
+//
+
 import UIKit
 
-final class ConversationListViewController: UIViewController {
+// MARK: - ConversationListViewController
 
+/// The main screen of the app that displays a list of all active chat conversations.
+final class ConversationListViewController: UIViewController {
+    // MARK: - Properties
+
+    // ViewModel responsible for fetching and managing the conversation data from Firestore.
     private let viewModel = ConversationViewModel()
-    
+
     // ✅ Pulse Button (Floating Action Button)
+    /// A floating '+' button to initiate a new chat.
     private let floatingButton: UIButton = {
         let btn = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
         btn.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         btn.backgroundColor = AppColor.primaryColor
         btn.tintColor = .white
-        btn.layer.cornerRadius = 30
+        btn.layer.cornerRadius = 30 // Makes the button circular (60/2).
+
+        // Shadow properties for a floating depth effect.
         btn.layer.shadowColor = UIColor.black.cgColor
         btn.layer.shadowOpacity = 0.3
         btn.layer.shadowOffset = CGSize(width: 0, height: 4)
         btn.layer.shadowRadius = 5
+
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
 
+    // TableView to display the list of conversations.
     private let tableView: UITableView = {
         let tv = UITableView()
+        // Registering the custom cell we created earlier.
         tv.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.identifier)
         tv.backgroundColor = AppColor.background
-        tv.separatorColor = .systemGray4
-        tv.separatorInset = UIEdgeInsets(top: 0, left: 88, bottom: 0, right: 0)
-        tv.tableFooterView = UIView()
+        tv.separatorStyle = .singleLine
+        // tv.separatorColor = .systemGray4
+        // Adjusting separator inset to align with the text, not the profile image.
+        // tv.separatorInset = UIEdgeInsets(top: 0, left: 90, bottom: 0, right: 0)
+        tv.tableFooterView = UIView() // Removes empty separator lines at the bottom.
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
 
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar() // ✅ Navigation setup should be first or handled carefully
         setupUI()
         bindViewModel()
         startPulseAnimation()
@@ -41,65 +63,42 @@ final class ConversationListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // ✅ Ensure large titles are enabled every time the view appears
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationItem.largeTitleDisplayMode = .never
+        // Refresh conversations every time the screen appears.
         viewModel.fetchConversations()
     }
 
+    // MARK: - UI Setup
+
+    /// Configures the view hierarchy and layout constraints.
     private func setupUI() {
+        title = "Chats"
+        navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = AppColor.background
+
         view.addSubview(tableView)
         view.addSubview(floatingButton)
-        
+
         tableView.delegate = self
         tableView.dataSource = self
 
         NSLayoutConstraint.activate([
-            // ✅ Fix: Use safeAreaLayoutGuide for top if titles are being hidden
-            // અથવા view.topAnchor વાપરો પણ ખાતરી કરો કે navigationBar transparent નથી
+            // TableView occupies the full screen.
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+
+            // Floating Action Button constraints (Bottom Right).
             floatingButton.widthAnchor.constraint(equalToConstant: 60),
             floatingButton.heightAnchor.constraint(equalToConstant: 60),
             floatingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            floatingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            floatingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
-        
+
         floatingButton.addTarget(self, action: #selector(didTapNewChat), for: .touchUpInside)
     }
 
-    private func setupNavigationBar() {
-        title = "HarshChat"
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = AppColor.background
-        
-        // Title Text Attributes
-        appearance.largeTitleTextAttributes = [
-            .font: AppFont.bold.set(size: 34),
-            .foregroundColor: AppColor.primaryText
-        ]
-        
-        appearance.titleTextAttributes = [
-            .font: AppFont.bold.set(size: 17),
-            .foregroundColor: AppColor.primaryText
-        ]
-        
-        // ✅ Apply to all states
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
-        navigationController?.navigationBar.tintColor = AppColor.primaryColor
-    }
-
+    /// Binds the ViewModel's update closure to reload the TableView.
     private func bindViewModel() {
         viewModel.onDataUpdate = { [weak self] in
             DispatchQueue.main.async {
@@ -108,30 +107,36 @@ final class ConversationListViewController: UIViewController {
         }
     }
 
+    // MARK: - Animations
+
+    /// Creates a continuous pulsing effect on the floating button to grab user attention.
     private func startPulseAnimation() {
         let pulse = CABasicAnimation(keyPath: "transform.scale")
         pulse.duration = 1.2
         pulse.fromValue = 1.0
         pulse.toValue = 1.1
         pulse.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        pulse.autoreverses = true
-        pulse.repeatCount = .infinity
+        pulse.autoreverses = true // Scales back to original size.
+        pulse.repeatCount = .infinity // Keeps animating forever.
         floatingButton.layer.add(pulse, forKey: "pulse")
     }
 
+    // MARK: - Actions
+
     @objc private func didTapNewChat() {
+        // Haptic Feedback: Provides a physical 'click' feel to the user.
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
-        
+
         let vc = NewChatViewController()
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
     }
 }
 
-// MARK: - TableView & Swipe Actions
+// MARK: - TableView Extensions
+
 extension ConversationListViewController: UITableViewDataSource, UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.conversations.count
     }
@@ -140,64 +145,81 @@ extension ConversationListViewController: UITableViewDataSource, UITableViewDele
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.identifier, for: indexPath) as? ConversationCell else {
             return UITableViewCell()
         }
+        // Configuring the cell with conversation data.
         cell.configure(with: viewModel.conversations[indexPath.row])
         return cell
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 90 // Sufficient height for profile image and two lines of text.
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
         let conversation = viewModel.conversations[indexPath.row]
-        let user = ChatUser(senderId: conversation.otherUserId, displayName: conversation.otherUserName, phoneNumber: conversation.otherUserPhone, profileImageUrl: conversation.profileImageUrl)
+
+        // Mapping conversation data to ChatUser to open the chat screen.
+        let user = ChatUser(
+            senderId: conversation.otherUserId,
+            displayName: conversation.otherUserName,
+            phoneNumber: conversation.otherUserPhone,
+            profileImageUrl: conversation.profileImageUrl
+        )
+
         let chatVM = ChatViewModel(chatId: conversation.id, otherUser: user)
         let chatVC = ChatViewController(viewModel: chatVM)
         navigationController?.pushViewController(chatVC, animated: true)
     }
 
+    // MARK: - Swipe Actions (Delete & Archive)
+
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] (_, _, completion) in
-         
-            let alert = UIAlertController(title: "Delete Chat?",
-                                          message: "Are you sure you want to delete this conversation and all its messages? This cannot be undone.",
-                                          preferredStyle: .actionSheet)
-            
+        // Action to delete a conversation.
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completion in
+
+            // Confirmation alert before permanent deletion.
+            let alert = UIAlertController(
+                title: "Delete Chat?",
+                message: "Are you sure you want to delete this conversation and all its messages? This cannot be undone.",
+                preferredStyle: .actionSheet
+            )
+
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
-               
                 self?.viewModel.deleteConversation(at: indexPath.row)
-                completion(true)
+                completion(true) // Indicate successful action.
             }))
-            
+
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-                completion(false)
+                completion(false) // Action cancelled.
             }))
-           
+
+            // iPad Support for action sheets.
             if let popoverController = alert.popoverPresentationController {
                 popoverController.sourceView = tableView
                 popoverController.sourceRect = tableView.rectForRow(at: indexPath)
             }
-            
+
             self?.present(alert, animated: true)
         }
-        
+
         deleteAction.image = UIImage(systemName: "trash.fill")
         deleteAction.backgroundColor = .systemRed
-        
+
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
-        configuration.performsFirstActionWithFullSwipe = true 
+        configuration.performsFirstActionWithFullSwipe = true // Allows deleting by swiping all the way.
         return configuration
     }
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let archiveAction = UIContextualAction(style: .normal, title: nil) { (_, _, completion) in
-            print("Archive tapped")
+        // Action to archive a conversation (Placeholder logic).
+        let archiveAction = UIContextualAction(style: .normal, title: nil) { _, _, completion in
+            print("Archive tapped for row: \(indexPath.row)")
             completion(true)
         }
         archiveAction.image = UIImage(systemName: "archivebox.fill")
         archiveAction.backgroundColor = AppColor.primaryColor
+
         return UISwipeActionsConfiguration(actions: [archiveAction])
     }
 }

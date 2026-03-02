@@ -1,8 +1,19 @@
+//
+//  EditProfileViewController.swift
+//  HarshChatApp
+//
+//  Created by Harsh on 02/03/26.
+//
+
 import Kingfisher
 import PhotosUI
 import UIKit
 
+// MARK: - EditProfileViewController
+
 final class EditProfileViewController: UIViewController {
+    // MARK: - Properties
+
     private let viewModel: EditProfileViewModel
 
     private let scrollView: UIScrollView = {
@@ -22,6 +33,7 @@ final class EditProfileViewController: UIViewController {
     private let profileImageView: UIImageView = {
         let iv = UIImageView(image: UIImage(systemName: "person.circle.fill"))
         iv.contentMode = .scaleAspectFill
+        iv.tintColor = .systemGray4
         iv.layer.cornerRadius = 60
         iv.layer.borderWidth = 3
         iv.layer.borderColor = AppColor.primaryColor.cgColor
@@ -42,6 +54,7 @@ final class EditProfileViewController: UIViewController {
         return btn
     }()
 
+    // Custom Input Fields
     private let nameField = CustomInputField(title: "Name", placeholder: "Your Name")
     private let bioField = CustomInputField(title: "Bio", placeholder: "About you")
     private let emailField = CustomInputField(title: "Email", placeholder: "email@example.com", keyboard: .emailAddress)
@@ -50,10 +63,13 @@ final class EditProfileViewController: UIViewController {
     private let genderSegment: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Male", "Female", "Other"])
         sc.selectedSegmentTintColor = AppColor.primaryColor
+        // White text for the selected segment
         sc.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         sc.translatesAutoresizingMaskIntoConstraints = false
         return sc
     }()
+
+    // MARK: - Initializer
 
     init(viewModel: EditProfileViewModel) {
         self.viewModel = viewModel
@@ -61,6 +77,8 @@ final class EditProfileViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +88,8 @@ final class EditProfileViewController: UIViewController {
         setupActions()
         bindViewModel()
     }
+
+    // MARK: - UI Setup
 
     private func setupUI() {
         view.backgroundColor = .systemGroupedBackground
@@ -121,19 +141,20 @@ final class EditProfileViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(didTapCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Update",
-            style: .prominent,
+            style: .done,
             target: self,
             action: #selector(didTapUpdate)
         )
         navigationController?.navigationBar.tintColor = AppColor.primaryColor
     }
 
+    /// MAJOR EVENT: Pre-filling the UI with existing user data
     private func populateData() {
         nameField.textField.text = viewModel.name
         bioField.textField.text = viewModel.bio
         emailField.textField.text = viewModel.email
         phoneField.textField.text = viewModel.phone
-        phoneField.textField.isEnabled = false
+        phoneField.textField.isEnabled = false // Phone is usually non-editable in profile update
 
         if let urlString = viewModel.profileImageUrl, let url = URL(string: urlString) {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.circle.fill"))
@@ -148,6 +169,8 @@ final class EditProfileViewController: UIViewController {
         profileImageView.addGestureRecognizer(tap)
         editIconButton.addTarget(self, action: #selector(didTapImage), for: .touchUpInside)
     }
+
+    // MARK: - Binding
 
     private func bindViewModel() {
         viewModel.onLoadingStatus = { isLoading in
@@ -164,13 +187,18 @@ final class EditProfileViewController: UIViewController {
         }
 
         viewModel.onUpdateSuccess = { [weak self] in
+            print("DEBUG: Profile update UI success callback")
             DispatchQueue.main.async { self?.dismiss(animated: true) }
         }
     }
 
+    // MARK: - Actions
+
     @objc private func didTapImage() {
+        // Modern approach using PHPicker instead of UIImagePickerController
         var config = PHPickerConfiguration()
         config.filter = .images
+        config.selectionLimit = 1
         let picker = PHPickerViewController(configuration: config)
         picker.delegate = self
         present(picker, animated: true)
@@ -179,29 +207,46 @@ final class EditProfileViewController: UIViewController {
     @objc private func didTapCancel() { dismiss(animated: true) }
 
     @objc private func didTapUpdate() {
+        // MAJOR EVENT: Capture all data and trigger save
         viewModel.name = nameField.textField.text ?? ""
         viewModel.bio = bioField.textField.text ?? ""
         viewModel.email = emailField.textField.text ?? ""
         viewModel.gender = genderSegment.titleForSegment(at: genderSegment.selectedSegmentIndex) ?? "Other"
+
+        // Convert image to data for upload if changed
         viewModel.profileImageData = profileImageView.image?.jpegData(compressionQuality: 0.7)
+
         viewModel.saveProfile()
     }
 }
 
+// MARK: - PHPickerViewControllerDelegate
+
 extension EditProfileViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
+
         guard let provider = results.first?.itemProvider, provider.canLoadObject(ofClass: UIImage.self) else { return }
-        provider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
+
+        provider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+            if let error = error {
+                print("DEBUG: Image selection error - \(error.localizedDescription)")
+                return
+            }
             DispatchQueue.main.async { self?.profileImageView.image = image as? UIImage }
         }
     }
 }
 
+// MARK: - CustomInputField View
+
+/// A reusable input component with a label, textfield, and bottom line.
 private class CustomInputField: UIView {
     let textField = UITextField()
+
     init(title: String, placeholder: String, keyboard: UIKeyboardType = .default) {
         super.init(frame: .zero)
+
         let label = UILabel()
         label.text = title
         label.font = AppFont.semiBold.set(size: 14)
@@ -210,6 +255,7 @@ private class CustomInputField: UIView {
         textField.placeholder = placeholder
         textField.font = AppFont.medium.set(size: 16)
         textField.keyboardType = keyboard
+        textField.autocorrectionType = .no
 
         let line = UIView()
         line.backgroundColor = .systemGray5
@@ -222,9 +268,11 @@ private class CustomInputField: UIView {
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor),
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
+
             textField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+
             line.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
             line.leadingAnchor.constraint(equalTo: leadingAnchor),
             line.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -232,5 +280,6 @@ private class CustomInputField: UIView {
             line.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
-    required init?(coder: NSCoder) { fatalError() }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 }

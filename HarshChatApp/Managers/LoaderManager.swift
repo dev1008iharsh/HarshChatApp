@@ -2,17 +2,24 @@
 //  LoaderManager.swift
 //  HarshChatApp
 //
-//  Created by Harsh on 01/03/26.
+//  Created by Harsh on 02/03/26.
+//  🌐 Portfolio → https://dev1008iharsh.github.io/
 //
 
 import UIKit
 
+// MARK: - LoaderService Protocol
+
+/// Protocol to define loader behavior, making it easy to mock for testing.
 protocol LoaderService {
     func startLoading()
     func stopLoading()
 }
 
-class LoaderManager: LoaderService {
+// MARK: - LoaderManager
+
+/// A thread-safe singleton to manage global loading overlay.
+final class LoaderManager: @preconcurrency LoaderService {
     static let shared = LoaderManager()
 
     private var backgroundView: UIView?
@@ -20,46 +27,64 @@ class LoaderManager: LoaderService {
 
     private init() {}
 
+    // MARK: - Public Methods
+
+    /// Displays a full-screen loading spinner on the Key Window.
+    @MainActor
     func startLoading() {
+        // Prevent duplicate loaders
         guard backgroundView == nil else { return }
 
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
-            return
-        }
+        guard let window = getActiveWindow() else { return }
 
-        let view = UIView(frame: window.bounds)
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        view.alpha = 0
+        print("🔄 [Debug] UI: Starting Loader...")
+
+        let containerView = UIView(frame: window.bounds)
+        containerView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        containerView.alpha = 0
 
         let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.color = .white
-        activityIndicator.center = view.center
+        activityIndicator.center = containerView.center
+        activityIndicator.hidesWhenStopped = true
 
-        view.addSubview(activityIndicator)
-        window.addSubview(view)
+        containerView.addSubview(activityIndicator)
+        window.addSubview(containerView)
 
         activityIndicator.startAnimating()
 
-        backgroundView = view
+        backgroundView = containerView
         spinner = activityIndicator
 
         UIView.animate(withDuration: 0.25) {
-            view.alpha = 1.0
+            containerView.alpha = 1.0
         }
     }
 
+    /// Hides and removes the loading spinner from the view hierarchy.
+    @MainActor
     func stopLoading() {
         guard let view = backgroundView else { return }
 
-        UIView.animate(withDuration: 0.25, animations: {
+        print("✅ [Debug] UI: Stopping Loader.")
+
+        UIView.animate(withDuration: 0.2) {
             view.alpha = 0
-        }) { _ in
+        } completion: { _ in
             self.spinner?.stopAnimating()
             view.removeFromSuperview()
-
             self.backgroundView = nil
             self.spinner = nil
         }
+    }
+
+    // MARK: - Private Helpers
+
+    /// Safely fetches the current active key window.
+    private func getActiveWindow() -> UIWindow? {
+        return UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows
+            .first { $0.isKeyWindow }
     }
 }

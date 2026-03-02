@@ -1,10 +1,22 @@
+//
+//  ImageViewerManager.swift
+//  HarshChatApp
+//
+//  Created by Harsh on 01/03/26.
+//  🌐 Portfolio → https://dev1008iharsh.github.io/
+//
+
 import Photos
 import UIKit
 
+// MARK: - ImageViewerManager
+
+/// A singleton manager to handle full-screen image transitions and swipe-to-dismiss.
 final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecognizerDelegate {
-    
+    // MARK: - Properties
+
     static let shared = ImageViewerManager()
-    private override init() {}
+    override private init() {}
 
     private var originalFrame: CGRect = .zero
     private var originalCornerRadius: CGFloat = 0
@@ -18,13 +30,15 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
     private var saveButton: UIButton?
 
     private var isControlHidden = false
-    private var customPanGesture: UIPanGestureRecognizer?
-    private var customRotationGesture: UIRotationGestureRecognizer?
-    private var initialRotation: CGFloat = 0.0
+    private var panGesture: UIPanGestureRecognizer?
 
+    // MARK: - Public Methods
+
+    /// Initiates the full-screen image transition from a source image view.
     func showFullScreen(from sourceImageView: UIImageView) {
         guard let window = getWindow(), let image = sourceImageView.image else { return }
 
+        print("🖼️ [Debug] UI: Presenting Image Viewer")
         originalFrame = sourceImageView.superview?.convert(sourceImageView.frame, to: nil) ?? .zero
         originalCornerRadius = sourceImageView.layer.cornerRadius
 
@@ -45,6 +59,7 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         scrollView = scView
 
         let imgView = UIImageView(frame: originalFrame)
+        imgView.tintColor = .systemGray4
         imgView.image = image
         imgView.contentMode = .scaleAspectFit
         imgView.clipsToBounds = true
@@ -55,6 +70,8 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
 
         setupFloatingControls(in: window)
         setupGestures()
+
+        // MARK: Entry Animation
 
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseInOut) {
             self.backgroundView?.alpha = 1
@@ -71,6 +88,8 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
             self.centerImage()
         }
     }
+
+    // MARK: - UI Configuration
 
     private func setupFloatingControls(in window: UIWindow) {
         let safeArea = window.safeAreaLayoutGuide
@@ -95,9 +114,9 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
             saveButton!.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -20),
             saveButton!.trailingAnchor.constraint(equalTo: window.trailingAnchor, constant: -20),
             saveButton!.widthAnchor.constraint(equalToConstant: 44),
-            saveButton!.heightAnchor.constraint(equalToConstant: 44)
+            saveButton!.heightAnchor.constraint(equalToConstant: 44),
         ])
-        
+
         toggleControlsVisibility(isHidden: true, animated: false)
     }
 
@@ -113,9 +132,12 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         return button
     }
 
+    // MARK: - Gestures Implementation
+
     private func setupGestures() {
         guard let scrollView = scrollView, let zoomImageView = zoomImageView else { return }
 
+        // Tap gestures
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap))
         scrollView.addGestureRecognizer(singleTap)
 
@@ -124,16 +146,14 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         zoomImageView.addGestureRecognizer(doubleTap)
         singleTap.require(toFail: doubleTap)
 
+        // MAJOR FIX: Pan gesture attached to scrollView with delegate
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         pan.delegate = self
         scrollView.addGestureRecognizer(pan)
-        customPanGesture = pan
-
-        let rotation = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation(_:)))
-        rotation.delegate = self
-        scrollView.addGestureRecognizer(rotation)
-        customRotationGesture = rotation
+        panGesture = pan
     }
+
+    // MARK: - Gesture Actions
 
     @objc private func handleSingleTap() {
         isControlHidden.toggle()
@@ -150,39 +170,43 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         }
     }
 
-    @objc private func handleRotation(_ sender: UIRotationGestureRecognizer) {
-        guard let zoomImageView = zoomImageView else { return }
-        if sender.state == .began {
-            initialRotation = atan2(zoomImageView.transform.b, zoomImageView.transform.a)
-        } else if sender.state == .changed {
-            zoomImageView.transform = CGAffineTransform(rotationAngle: initialRotation + sender.rotation)
-        } else if sender.state == .ended {
-            UIView.animate(withDuration: 0.3) { zoomImageView.transform = .identity }
-        }
-    }
-
     @objc private func handlePan(_ sender: UIPanGestureRecognizer) {
-        guard let zoomImageView = zoomImageView, let window = getWindow(), scrollView?.zoomScale == 1.0 else { return }
+        guard let zoomImageView = zoomImageView, let window = getWindow(), let bgView = backgroundView else { return }
+
         let translation = sender.translation(in: window)
-        
+        let velocity = sender.velocity(in: window)
+
         if sender.state == .changed {
-            let scale = max(0.8, 1.0 - (abs(translation.y) / 1000.0))
+            // Calculate scale and alpha based on vertical movement
+            let dragScale = 1.0 - (abs(translation.y) / 1000.0)
+            let finalScale = max(0.8, dragScale)
+
+            // Apply movement and scale
             zoomImageView.center = CGPoint(x: window.center.x + translation.x, y: window.center.y + translation.y)
-            zoomImageView.transform = CGAffineTransform(scaleX: scale, y: scale)
-            backgroundView?.alpha = max(0, 1.0 - (abs(translation.y) / 500.0))
+            zoomImageView.transform = CGAffineTransform(scaleX: finalScale, y: finalScale)
+            bgView.alpha = max(0, 1.0 - (abs(translation.y) / 500.0))
+            toggleControlsVisibility(isHidden: true, animated: true)
+
         } else if sender.state == .ended {
-            if abs(translation.y) > 120 { dismissFullScreen() }
-            else {
+            // Dismiss if dragged far enough or with high velocity
+            if abs(translation.y) > 100 || abs(velocity.y) > 500 {
+                dismissFullScreen()
+            } else {
+                // Restore original state
                 UIView.animate(withDuration: 0.3) {
                     zoomImageView.center = window.center
                     zoomImageView.transform = .identity
-                    self.backgroundView?.alpha = 1.0
+                    bgView.alpha = 1.0
+                    self.toggleControlsVisibility(isHidden: false, animated: true)
                 }
             }
         }
     }
 
+    // MARK: - Navigation Logic
+
     @objc private func dismissFullScreen() {
+        print("📱 [Debug] UI: Dismissing Image Viewer")
         UIView.animate(withDuration: 0.4, animations: {
             self.zoomImageView?.frame = self.originalFrame
             self.zoomImageView?.layer.cornerRadius = self.originalCornerRadius
@@ -193,10 +217,12 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         }
     }
 
+    // MARK: - Image Utilities
+
     @objc private func handleSave() {
         guard let image = zoomImageView?.image else { return }
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        // You can add a toast here: ToastManager.shared.show(message: "Saved to Photos")
+        print("💾 [Debug] UI: Image saved to Photos")
     }
 
     @objc private func handleShare() {
@@ -204,6 +230,8 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         topVC.present(activityVC, animated: true)
     }
+
+    // MARK: - Helpers
 
     private func cleanup() {
         [zoomImageView, scrollView, backgroundView, closeButton, shareButton, saveButton].forEach { $0?.removeFromSuperview() }
@@ -227,14 +255,34 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         zoomImageView.center = CGPoint(x: scrollView.contentSize.width * 0.5 + offsetX, y: scrollView.contentSize.height * 0.5 + offsetY)
     }
 
+    // MARK: - UIGestureRecognizerDelegate
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        // MAJOR FIX: Only allow dismissal pan if we are not zoomed in
+        if gestureRecognizer == panGesture {
+            let velocity = panGesture?.velocity(in: scrollView)
+            return scrollView?.zoomScale == 1.0 && abs(velocity?.y ?? 0) > abs(velocity?.x ?? 0)
+        }
+        return true
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // Allow pan and scroll to work together for smooth interaction
+        return true
+    }
+
+    // MARK: - UIScrollViewDelegate
+
     func viewForZooming(in scrollView: UIScrollView) -> UIView? { zoomImageView }
     func scrollViewDidZoom(_ scrollView: UIScrollView) { centerImage() }
 
     private func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
         let w = (scrollView?.frame.size.width ?? 0) / scale
         let h = (scrollView?.frame.size.height ?? 0) / scale
-        return CGRect(x: center.x - (w/2), y: center.y - (h/2), width: w, height: h)
+        return CGRect(x: center.x - (w / 2), y: center.y - (h / 2), width: w, height: h)
     }
+
+    // MARK: - Window Accessors
 
     private func getWindow() -> UIWindow? {
         UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first
@@ -245,6 +293,4 @@ final class ImageViewerManager: NSObject, UIScrollViewDelegate, UIGestureRecogni
         while let presented = top?.presentedViewController { top = presented }
         return top
     }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool { true }
 }

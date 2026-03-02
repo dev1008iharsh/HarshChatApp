@@ -1,26 +1,42 @@
+//
+//  SettingsViewController.swift
+//  HarshChatApp
+//
+//  Created by Harsh on 02/03/26.
+//
+
 import FirebaseAuth
 import Kingfisher
 import UIKit
 
+// MARK: - SettingsViewController
+
+/// A modern settings screen using UITableView with insetGrouped style to manage user preferences.
 final class SettingsViewController: UIViewController {
+    // MARK: - Properties
+
     private let viewModel: SettingsViewModel
 
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsCell")
-        table.backgroundColor = .systemGroupedBackground
+        table.backgroundColor = AppColor.background
         table.translatesAutoresizingMaskIntoConstraints = false
+        // Dynamic cell height support
         table.rowHeight = UITableView.automaticDimension
-        table.estimatedRowHeight = 100
+        table.estimatedRowHeight = 120
         return table
     }()
+
+    // MARK: - Initializer
 
     init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) { fatalError() }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,15 +46,24 @@ final class SettingsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Refresh profile data every time the user enters settings
         viewModel.fetchUserData()
     }
 
+    // MARK: - Setup UI
+
+    /// Configures the main view appearance and constraints.
     private func setupUI() {
         title = "Settings"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.addSubview(tableView)
+
         tableView.delegate = self
         tableView.dataSource = self
+
+        // Register custom and standard cells
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsCell")
+        tableView.register(ProfileHeaderCell.self, forCellReuseIdentifier: ProfileHeaderCell.identifier)
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -48,16 +73,22 @@ final class SettingsViewController: UIViewController {
         ])
     }
 
+    // MARK: - Bindings
+
+    /// Connects the ViewModel closures to UI update logic.
     private func bindViewModel() {
+        // Refresh table whenever data is fetched or modified
         viewModel.onDataUpdate = { [weak self] in
             DispatchQueue.main.async { self?.tableView.reloadData() }
         }
 
+        // Show generic informational alerts
         viewModel.showAlert = { [weak self] title in
             guard let self = self else { return }
-            AlertManager.showAlert(title: title, message: "You tapped on \(title). Feature coming soon!", vc: self)
+            AlertManager.showAlert(title: title, message: "Coming soon!", vc: self)
         }
 
+        // Handle navigation to the Profile Editor
         viewModel.onNavigateToEdit = { [weak self] user in
             let editVM = EditProfileViewModel(user: user)
             let editVC = EditProfileViewController(viewModel: editVM)
@@ -66,6 +97,7 @@ final class SettingsViewController: UIViewController {
             self?.present(nav, animated: true)
         }
 
+        // Handle Session teardown via SceneDelegate
         viewModel.onLogout = { [weak self] in
             if let sceneDelegate = self?.view.window?.windowScene?.delegate as? SceneDelegate {
                 sceneDelegate.checkAuthentication()
@@ -73,6 +105,8 @@ final class SettingsViewController: UIViewController {
         }
     }
 }
+
+// MARK: - UITableViewDataSource & Delegate
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -84,59 +118,25 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath)
         let option = viewModel.sections[indexPath.section].options[indexPath.row]
-        
+
+        // Section 0 is reserved for the Large Profile Header Card
         if indexPath.section == 0 {
-            configureProfileCell(cell, with: option, at: indexPath)
-        } else {
-            configureStandardCell(cell, with: option)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileHeaderCell.identifier, for: indexPath) as? ProfileHeaderCell else {
+                return UITableViewCell()
+            }
+            let imageUrl = viewModel.currentUser?.profileImageUrl
+            cell.configure(title: option.title, subtitle: option.subtitle ?? "Available", imageUrl: imageUrl)
+            return cell
         }
-        
-        cell.accessoryType = .disclosureIndicator
+
+        // Standard settings row
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath)
+        configureStandardCell(cell, with: option)
         return cell
     }
 
-    private func configureProfileCell(_ cell: UITableViewCell, with option: SettingsOption, at indexPath: IndexPath) {
-        var content = cell.defaultContentConfiguration()
-        content.text = option.title
-        content.textProperties.font = AppFont.light.set(size: 22)
-        content.textProperties.color = AppColor.primaryText
-        
-        content.secondaryText = option.subtitle ?? "Available"
-        content.secondaryTextProperties.font = AppFont.light.set(size: 14)
-        content.secondaryTextProperties.color = AppColor.secondaryText
-        content.secondaryTextProperties.numberOfLines = 3
-        
-        let size: CGFloat = 60
-        content.imageProperties.maximumSize = CGSize(width: size, height: size)
-        content.imageProperties.reservedLayoutSize = CGSize(width: size, height: size)
-        content.imageProperties.cornerRadius = size / 2
-        content.imageToTextPadding = 15
-        content.image = UIImage(systemName: "person.circle.fill")
-        
-        if let urlString = viewModel.currentUser?.profileImageUrl, let url = URL(string: urlString) {
-            let processor = RoundCornerImageProcessor(cornerRadius: 140)
-            KingfisherManager.shared.retrieveImage(with: url, options: [.processor(processor)]) { [weak self] result in
-                guard let self = self, case .success(let value) = result else { return }
-                DispatchQueue.main.async {
-                    if let currentCell = self.tableView.cellForRow(at: indexPath) {
-                        var updatedContent = currentCell.defaultContentConfiguration()
-                        updatedContent.text = content.text
-                        updatedContent.textProperties = content.textProperties
-                        updatedContent.secondaryText = content.secondaryText
-                        updatedContent.secondaryTextProperties = content.secondaryTextProperties
-                        updatedContent.imageProperties = content.imageProperties
-                        updatedContent.imageToTextPadding = content.imageToTextPadding
-                        updatedContent.image = value.image
-                        currentCell.contentConfiguration = updatedContent
-                    }
-                }
-            }
-        }
-        cell.contentConfiguration = content
-    }
-
+    /// Helper to style standard settings rows using modern UIListContentConfiguration.
     private func configureStandardCell(_ cell: UITableViewCell, with option: SettingsOption) {
         var content = cell.defaultContentConfiguration()
         content.text = option.title
@@ -144,12 +144,21 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         content.textProperties.color = option.titleColor
         content.image = UIImage(systemName: option.iconName)
         content.imageProperties.tintColor = option.iconTintColor
+        content.imageToTextPadding = 15
+
         cell.contentConfiguration = content
+        cell.backgroundColor = .secondarySystemGroupedBackground
+        cell.accessoryType = .disclosureIndicator
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        // Execute the handler closure associated with the selected option
         viewModel.sections[indexPath.section].options[indexPath.row].handler()
     }
-}
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Explicit height for the profile card, automatic for others
+        return indexPath.section == 0 ? 120 : UITableView.automaticDimension
+    }
+}
