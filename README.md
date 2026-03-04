@@ -1,9 +1,14 @@
 # 📱 HarshChat: Premium Real-Time Messaging Suite
 ### Ultra-Modern iOS Engine Built with Swift, Programmatic UIKit & MVVM
- 
- 
+  
 ## 🎯 The Vision
 **HarshChat** is not just a chat app; it is a showcase of high-end iOS engineering. Built specifically for users who demand a fluid, lag-free experience, it leverages **Firebase Realtime Database** for sub-second synchronization and **Programmatic UIKit** for a design that is as fast as it is beautiful.
+
+
+<img width="863" height="456" alt="HarshChat1" src="https://github.com/user-attachments/assets/60e9d5be-0435-4c7e-b212-574f4f4cf002" />
+
+<img width="969" height="517" alt="HarshChat2" src="https://github.com/user-attachments/assets/ef815acd-3575-4e1f-9a12-f3adad17684a" />
+
 
 ---
 
@@ -14,6 +19,8 @@ This project pushes the boundaries of `UIView.animate` and `CoreAnimation` to cr
 * **Floating Vector Dynamics:** The main login visual features a continuous floating animation combined with a sophisticated popup transition on `viewDidAppear`.
 * **Interactive Pulse Effects:** The Floating Action Button (FAB) uses a recursive scaling animation to create a "heartbeat" pulse, drawing user attention to primary actions.
 * **Fluid State Shifts:** Action buttons utilize `UIView.transition` with cross-dissolve to shift colors from Neutral Gray to Brand Green instantly as validation requirements are met.
+
+https://github.com/user-attachments/assets/f15e3c3b-e9a7-470b-a171-97e40387a770
 
 ---
 
