@@ -5,9 +5,9 @@
 **HarshChat** is not just a chat app; it is a showcase of high-end iOS engineering. Built specifically for users who demand a fluid, lag-free experience, it leverages **Firebase Realtime Database** for sub-second synchronization and **Programmatic UIKit** for a design that is as fast as it is beautiful.
 
 
-<img width="863" height="456" alt="HarshChat1" src="https://github.com/user-attachments/assets/60e9d5be-0435-4c7e-b212-574f4f4cf002" />
+<img width="900" height="500" alt="HarshChat1" src="https://github.com/user-attachments/assets/60e9d5be-0435-4c7e-b212-574f4f4cf002" />
 
-<img width="969" height="517" alt="HarshChat2" src="https://github.com/user-attachments/assets/ef815acd-3575-4e1f-9a12-f3adad17684a" />
+<img width="900" height="500" alt="HarshChat2" src="https://github.com/user-attachments/assets/ef815acd-3575-4e1f-9a12-f3adad17684a" />
 
 
 ---
