@@ -1,8 +1,7 @@
 # 📱 HarshChat: Premium Real-Time Messaging Suite
 ### Ultra-Modern iOS Engine Built with Swift, Programmatic UIKit & MVVM
----
-
----
+ 
+ 
 ## 🎯 The Vision
 **HarshChat** is not just a chat app; it is a showcase of high-end iOS engineering. Built specifically for users who demand a fluid, lag-free experience, it leverages **Firebase Realtime Database** for sub-second synchronization and **Programmatic UIKit** for a design that is as fast as it is beautiful.
 
@@ -80,14 +79,14 @@ The project is strictly decoupled to ensure zero "Massive View Controller" issue
 
 ---
 
-### 👨‍💻 Developed By
-**Harsh**
-*Senior iOS Developer | Clean Architecture & Animation Specialist*
-*📧 dev.iharsh1008@gmail.com
-📱 +91 9662108047
+## 👨‍💻 Developed By
 
-🌐 Portfolio: https://dev1008iharsh.github.io/
-💼 LinkedIn: https://www.linkedin.com/in/dev1008iharsh/
-🐙 GitHub Repositories: https://github.com/dev1008iharsh?tab=repositories*
+**Harsh** *Senior iOS Developer | Clean Architecture & Animation Specialist*
+
+> *📧 **Email:** [dev.iharsh1008@gmail.com](mailto:dev.iharsh1008@gmail.com)*
+> *📱 **Phone:** +91 9662108047*
+> *🌐 **Portfolio:** [https://dev1008iharsh.github.io/](https://dev1008iharsh.github.io/)*
+> *💼 **LinkedIn:** [https://www.linkedin.com/in/dev1008iharsh/](https://www.linkedin.com/in/dev1008iharsh/)*
+> *🐙 **GitHub Repositories:** [https://github.com/dev1008iharsh?tab=repositories](https://github.com/dev1008iharsh?tab=repositories)*
 
 ---
