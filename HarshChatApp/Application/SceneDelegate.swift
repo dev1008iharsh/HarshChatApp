@@ -95,7 +95,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBar.tabBar.tintColor = AppColor.primaryColor
 
         print("📱 [Debug] Navigation: Setting Main TabBar as Root.")
-        setRootViewController(tabBar, direction: .transitionCrossDissolve)
+        setRootViewController(tabBar, direction: .transitionFlipFromRight)
     }
 
     // MARK: - Helper Methods

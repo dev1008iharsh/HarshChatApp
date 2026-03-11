@@ -73,6 +73,7 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
 
     /// Configures the Navigation Bar color and removes the bottom thin line.
     private func setupNavigationAppearance() {
+        navigationController?.navigationBar.prefersLargeTitles = false
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = AppColor.background
@@ -178,13 +179,13 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
     /// Customizes the Input Bar (where the user types the message).
     private func setupInputBar() {
         messageInputBar.delegate = self
-        messageInputBar.backgroundView.backgroundColor = AppColor.background
+        messageInputBar.backgroundView.backgroundColor = AppColor.secondaryBackground
 
         // Styling the text input field
         messageInputBar.inputTextView.placeholder = "Message"
         messageInputBar.inputTextView.tintColor = AppColor.primaryColor
         messageInputBar.inputTextView.font = AppFont.regular.set(size: 16)
-        messageInputBar.inputTextView.backgroundColor = .systemGray6
+        messageInputBar.inputTextView.backgroundColor = .systemGray5
         messageInputBar.inputTextView.layer.cornerRadius = 20
         messageInputBar.inputTextView.layer.masksToBounds = true
 
@@ -335,7 +336,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 
         // Extract the selected image and convert it to Data (compressed JPEG).
         guard let image = info[.originalImage] as? UIImage,
-              let data = image.jpegData(compressionQuality: 0.2) else { return }
+              let data = image.jpegData(compressionQuality: 0.1) else { return }
 
         // Show loading spinner while uploading.
         LoaderManager.shared.startLoading()

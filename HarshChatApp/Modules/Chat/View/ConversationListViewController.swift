@@ -63,6 +63,7 @@ final class ConversationListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
         // Refresh conversations every time the screen appears.
         viewModel.fetchConversations()
     }
@@ -72,9 +73,7 @@ final class ConversationListViewController: UIViewController {
     /// Configures the view hierarchy and layout constraints.
     private func setupUI() {
         title = "Chats"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        view.backgroundColor = AppColor.background
-
+        view.backgroundColor = AppColor.background 
         view.addSubview(tableView)
         view.addSubview(floatingButton)
 

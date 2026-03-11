@@ -19,6 +19,7 @@
 		04325D672F5461D200F7D35C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D662F5461D100F7D35C /* User.swift */; };
 		04325D692F5462B400F7D35C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04325D682F5462B300F7D35C /* AuthService.swift */; };
 		0446EB372F558C6E0036EA84 /* ProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0446EB362F558C6D0036EA84 /* ProfileHeaderCell.swift */; };
+		046DBCA62F55D30900E8F905 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9AD2F53FE6800D427FA /* LaunchScreen.storyboard */; };
 		04C9B98B2F53FB4A00D427FA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98A2F53FB4A00D427FA /* FirebaseAnalytics */; };
 		04C9B98D2F53FB4A00D427FA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98C2F53FB4A00D427FA /* FirebaseAuth */; };
 		04C9B98F2F53FB4A00D427FA /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9B98E2F53FB4A00D427FA /* FirebaseDatabase */; };
@@ -33,7 +34,6 @@
 		04C9B9B72F53FE6800D427FA /* GoogleSansCode-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A52F53FE6800D427FA /* GoogleSansCode-Regular.ttf */; };
 		04C9B9B82F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A62F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf */; };
 		04C9B9B92F53FE6800D427FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9A92F53FE6800D427FA /* Assets.xcassets */; };
-		04C9B9BC2F53FE6800D427FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04C9B9AD2F53FE6800D427FA /* LaunchScreen.storyboard */; };
 		04C9B9CB2F54011A00D427FA /* AppFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9CA2F54011A00D427FA /* AppFont.swift */; };
 		04C9B9CD2F54012500D427FA /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9CC2F54012400D427FA /* AppColor.swift */; };
 		04C9B9DA2F54040000D427FA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B9D92F54040000D427FA /* LoginViewController.swift */; };
@@ -433,13 +433,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				04C9B9B42F53FE6800D427FA /* GoogleSansCode-Bold.ttf in Resources */,
+				046DBCA62F55D30900E8F905 /* LaunchScreen.storyboard in Resources */,
 				04C9B9E02F540C9B00D427FA /* GoogleService-Info.plist in Resources */,
 				04C9B9B52F53FE6800D427FA /* GoogleSansCode-Light.ttf in Resources */,
 				04C9B9B62F53FE6800D427FA /* GoogleSansCode-Medium.ttf in Resources */,
 				04C9B9B72F53FE6800D427FA /* GoogleSansCode-Regular.ttf in Resources */,
 				04C9B9B82F53FE6800D427FA /* GoogleSansCode-SemiBold.ttf in Resources */,
 				04C9B9B92F53FE6800D427FA /* Assets.xcassets in Resources */,
-				04C9B9BC2F53FE6800D427FA /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,6 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87M7TK5K4U;
@@ -513,7 +514,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need permission to save images from chat to your gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photos so you can share them with your friends.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
@@ -540,6 +541,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87M7TK5K4U;
@@ -550,7 +552,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need permission to save images from chat to your gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photos so you can share them with your friends.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
@@ -625,6 +627,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -683,6 +687,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;

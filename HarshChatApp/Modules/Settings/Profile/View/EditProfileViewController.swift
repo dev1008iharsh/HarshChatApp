@@ -214,7 +214,7 @@ final class EditProfileViewController: UIViewController {
         viewModel.gender = genderSegment.titleForSegment(at: genderSegment.selectedSegmentIndex) ?? "Other"
 
         // Convert image to data for upload if changed
-        viewModel.profileImageData = profileImageView.image?.jpegData(compressionQuality: 0.7)
+        viewModel.profileImageData = profileImageView.image?.jpegData(compressionQuality: 0.2)
 
         viewModel.saveProfile()
     }

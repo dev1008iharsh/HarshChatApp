@@ -35,6 +35,10 @@ struct AppColor {
         .systemGroupedBackground
     }
 
+    static let secondaryBackground = UIColor { _ in
+        .tertiarySystemBackground
+    }
+
     /*
      static let background = UIColor { trait in
          trait.userInterfaceStyle == .dark ?
