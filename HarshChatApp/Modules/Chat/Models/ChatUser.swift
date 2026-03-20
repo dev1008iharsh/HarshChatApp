@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageKit
+import FirebaseAuth
 
 // MARK: - ChatUser Model
 
@@ -41,6 +42,7 @@ extension ChatUser {
     /// Helpful for UI logic like showing bubbles on the right vs left side.
     var isCurrentUser: Bool {
         // You would typically compare this with Auth.auth().currentUser?.uid
-        return false // Placeholder logic
+        return senderId == Auth.auth().currentUser?.uid
+        //return false // Placeholder logic
     }
 }
