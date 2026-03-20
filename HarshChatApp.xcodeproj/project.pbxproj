@@ -55,6 +55,7 @@
 		04D26EF62F54D70800EB2FAB /* ContactService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26EF52F54D70800EB2FAB /* ContactService.swift */; };
 		04D26EF82F54E0C100EB2FAB /* ImageViewerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26EF72F54E0C000EB2FAB /* ImageViewerManager.swift */; };
 		04F55F8E2F54A3100050090B /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04F55F8D2F54A3100050090B /* MessageKit */; };
+		04F81D3D2F6D4197005E0B9E /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F81D3C2F6D4196005E0B9E /* AppRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +100,7 @@
 		04D26EF32F54D6BC00EB2FAB /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		04D26EF52F54D70800EB2FAB /* ContactService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactService.swift; sourceTree = "<group>"; };
 		04D26EF72F54E0C000EB2FAB /* ImageViewerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerManager.swift; sourceTree = "<group>"; };
+		04F81D3C2F6D4196005E0B9E /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +248,7 @@
 		04C9B9C32F5400A600D427FA /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				04F81D3C2F6D4196005E0B9E /* AppRouter.swift */,
 				04C9B9A82F53FE6800D427FA /* AppDelegate.swift */,
 				04C9B9AE2F53FE6800D427FA /* SceneDelegate.swift */,
 			);
@@ -466,6 +469,7 @@
 				04D26EDB2F54D42800EB2FAB /* ChatUser.swift in Sources */,
 				0446EB372F558C6E0036EA84 /* ProfileHeaderCell.swift in Sources */,
 				04325D672F5461D200F7D35C /* User.swift in Sources */,
+				04F81D3D2F6D4197005E0B9E /* AppRouter.swift in Sources */,
 				04325CED2F54427D00F7D35C /* LoginViewModel.swift in Sources */,
 				04325CF42F5449C100F7D35C /* SettingsViewController.swift in Sources */,
 				04D26EE92F54D47A00EB2FAB /* ChatService.swift in Sources */,

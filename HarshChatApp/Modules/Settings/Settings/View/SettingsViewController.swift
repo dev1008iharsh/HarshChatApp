@@ -98,10 +98,9 @@ final class SettingsViewController: UIViewController {
         }
 
         // Handle Session teardown via SceneDelegate
-        viewModel.onLogout = { [weak self] in
-            if let sceneDelegate = self?.view.window?.windowScene?.delegate as? SceneDelegate {
-                sceneDelegate.checkAuthentication()
-            }
+        viewModel.onLogout = {
+            // AppRouter will handle Firebase sign-out and route to the Login screen
+            AppRouter.shared.forceLogout()
         }
     }
 }

@@ -73,7 +73,7 @@ final class ConversationListViewController: UIViewController {
     /// Configures the view hierarchy and layout constraints.
     private func setupUI() {
         title = "Chats"
-        view.backgroundColor = AppColor.background 
+        view.backgroundColor = AppColor.background
         view.addSubview(tableView)
         view.addSubview(floatingButton)
 
@@ -173,40 +173,48 @@ extension ConversationListViewController: UITableViewDataSource, UITableViewDele
 
     // MARK: - Swipe Actions (Delete & Archive)
 
+    // MARK: - Swipe Actions (Delete & Archive)
+
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        // Action to delete a conversation.
-        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completion in
+        // Action to trigger the delete options
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
 
-            // Confirmation alert before permanent deletion.
-            let alert = UIAlertController(
-                title: "Delete Chat?",
-                message: "Are you sure you want to delete this conversation and all its messages? This cannot be undone.",
-                preferredStyle: .actionSheet
-            )
+            // Action Sheet for choosing Delete type
+            let actionSheet = UIAlertController(title: "Delete Chat", message: "What would you like to do?", preferredStyle: .actionSheet)
 
-            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
-                self?.viewModel.deleteConversation(at: indexPath.row)
-                completion(true) // Indicate successful action.
+            // Option 1: Delete only for me (Like WhatsApp Clear Chat)
+            actionSheet.addAction(UIAlertAction(title: "Delete for Me", style: .default, handler: { _ in
+                self?.viewModel.deleteChatForMe(at: indexPath.row)
+                completion(true)
             }))
 
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-                completion(false) // Action cancelled.
+            // Option 2: Delete for everyone (Wipe everything)
+            actionSheet.addAction(UIAlertAction(title: "Delete for Everyone", style: .destructive, handler: { _ in
+                self?.viewModel.deleteChatForEveryone(at: indexPath.row)
+                completion(true)
             }))
 
-            // iPad Support for action sheets.
-            if let popoverController = alert.popoverPresentationController {
+            // Cancel
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+                completion(false)
+            }))
+
+            // iPad Support
+            if let popoverController = actionSheet.popoverPresentationController {
                 popoverController.sourceView = tableView
                 popoverController.sourceRect = tableView.rectForRow(at: indexPath)
             }
 
-            self?.present(alert, animated: true)
+            self?.present(actionSheet, animated: true)
         }
 
         deleteAction.image = UIImage(systemName: "trash.fill")
         deleteAction.backgroundColor = .systemRed
 
+        // Disable full swipe to prevent accidental deletion without choosing an option
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
-        configuration.performsFirstActionWithFullSwipe = true // Allows deleting by swiping all the way.
+        configuration.performsFirstActionWithFullSwipe = false
+
         return configuration
     }
 

@@ -44,20 +44,51 @@ final class ConversationViewModel {
     }
 
     /// Orchestrates the deletion of a conversation from the UI, Firestore, and Firebase Storage.
-    func deleteConversation(at index: Int) {
+
+    // MARK: - Delete Operations
+
+    /// Deletes the chat ONLY for the current user. The other user will still see the chat.
+    func deleteChatForMe(at index: Int) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let conversationId = conversations[index].id
 
-        // MAJOR EVENT: Removing the pointer from the user's personal chat list
-        db.collection("users").document(uid).collection("conversations").document(conversationId).delete { [weak self] error in
+        // MAJOR EVENT: Remove only MY pointer to this chat.
+        db.collection("users").document(uid).collection("conversations").document(conversationId).delete { error in
             if let error = error {
-                print("❌ DEBUG: Failed to delete conversation link: \(error.localizedDescription)")
+                print("❌ DEBUG: Failed to delete for me: \(error.localizedDescription)")
+                return
+            }
+            print("✅ DEBUG: Chat deleted for ME only: \(conversationId)")
+        }
+    }
+
+    /// Deletes the chat for both users and wipes messages from the server.
+    /// Updates the other user's last message to show it was deleted.
+    func deleteChatForEveryone(at index: Int) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        let conversation = conversations[index]
+        let conversationId = conversation.id
+        let otherUserId = conversation.otherUserId
+
+        // 1. Remove from MY chat list completely.
+        db.collection("users").document(uid).collection("conversations").document(conversationId).delete()
+
+        // 2. ✅ FIX: Update the OTHER USER'S chat list to show "Deleted" instead of the old message.
+        let updatedData: [String: Any] = [
+            "lastMessage": "🚫 This chat was deleted",
+            "timestamp": FieldValue.serverTimestamp(),
+        ]
+
+        db.collection("users").document(otherUserId).collection("conversations").document(conversationId).updateData(updatedData) { [weak self] error in
+            if let error = error {
+                print("❌ DEBUG: Failed to update other user's list: \(error.localizedDescription)")
                 return
             }
 
-            print("📱 DEBUG: Conversation removed from UI list for Chat: \(conversationId)")
+            print("✅ DEBUG: Other user's list updated with 'Deleted' message.")
 
-            // Start background cleanup for actual messages and files
+            // 3. Start background cleanup for actual messages and files (from previous code)
             Task {
                 await self?.performFullCleanup(chatId: conversationId)
             }

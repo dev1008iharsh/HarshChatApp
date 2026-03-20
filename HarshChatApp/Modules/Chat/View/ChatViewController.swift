@@ -28,18 +28,37 @@ final class CustomTitleView: UIView {
 final class ChatViewController: MessagesViewController, MessageCellDelegate {
     // MARK: - Properties
 
-    // The logic provider (ViewModel) that talks to Firebase.
+    /// The logic provider (ViewModel) that talks to Firebase.
     private let viewModel: ChatViewModel
 
-    // Native iOS Image Picker to select photos from Gallery or Camera.
+    /// Native iOS Image Picker to select photos from Gallery or Camera.
     private let imagePicker = UIImagePickerController()
 
-    // The '+' button on the left side of the input bar to send attachments.
+    /// The '+' button on the left side of the input bar to send attachments.
     private let plusButton: UIButton = {
         let btn = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold)
         btn.setImage(UIImage(systemName: "plus"), for: .normal)
         btn.tintColor = AppColor.primaryColor
+        return btn
+    }()
+
+    /// Pagination Button (Load Older Messages)
+    private let loadOlderButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Load older messages", for: .normal)
+        btn.titleLabel?.font = AppFont.bold.set(size: 15)
+        btn.backgroundColor = AppColor.primaryColor
+        btn.setTitleColor(.white, for: .normal)
+        btn.layer.cornerRadius = 15
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 0.1
+        btn.layer.shadowOffset = CGSize(width: 0, height: 2)
+
+        // Initial state should be completely hidden and transparent
+        btn.isHidden = true
+        btn.alpha = 0.0
+        btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
 
@@ -53,7 +72,9 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
         hidesBottomBarWhenPushed = true
     }
 
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Lifecycle
 
@@ -65,8 +86,8 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
         setupInputBar() // 4. Design the typing area
         bindViewModel() // 5. Connect UI to Data
 
-        // Start listening to Firestore for new messages in real-time.
-        viewModel.listenForMessages()
+        // Start fetching initial messages from Firestore.
+        viewModel.loadInitialMessages()
     }
 
     // MARK: - Setup Methods
@@ -102,6 +123,17 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
             layout.setMessageIncomingAvatarSize(.zero)
             layout.setMessageOutgoingAvatarSize(.zero)
         }
+
+        // Add Load Older Button
+        view.addSubview(loadOlderButton)
+        loadOlderButton.addTarget(self, action: #selector(didTapLoadOlder), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([
+            loadOlderButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            loadOlderButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadOlderButton.widthAnchor.constraint(equalToConstant: 230),
+            loadOlderButton.heightAnchor.constraint(equalToConstant: 40),
+        ])
     }
 
     /// Creates a custom view for the Navigation Bar that shows the Name, Phone, and Profile Pic.
@@ -117,9 +149,11 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
         profileImageView.clipsToBounds = true
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.isUserInteractionEnabled = true
+
         // Tap Gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleHeaderImageTap(_:)))
         profileImageView.addGestureRecognizer(tapGesture)
+
         // Loading image using Kingfisher.
         if let urlStr = viewModel.otherUser.profileImageUrl, let url = URL(string: urlStr) {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.circle.fill"))
@@ -166,16 +200,6 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
         navigationItem.titleView = headerContainer
     }
 
-    // MARK: - Actions
-
-    @objc private func handleHeaderImageTap(_ sender: UITapGestureRecognizer) {
-        guard let tappedImageView = sender.view as? UIImageView else { return }
-
-        print("🖼️ DEBUG: Header Profile Image tapped")
-        view.endEditing(true)
-        ImageViewerManager.shared.showFullScreen(from: tappedImageView)
-    }
-
     /// Customizes the Input Bar (where the user types the message).
     private func setupInputBar() {
         messageInputBar.delegate = self
@@ -210,27 +234,62 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
         messageInputBar.setStackViewItems([leftItem], forStack: .left, animated: false)
     }
 
-    /// Handles the '+' button click.
+    // MARK: - Data Binding
+
+    private func bindViewModel() {
+        // 1. Initial Load or New Messages
+        viewModel.onMessagesUpdated = { [weak self] isInitialLoad in
+            DispatchQueue.main.async {
+                self?.messagesCollectionView.reloadData()
+
+                // Scroll to the latest message (bottom)
+                if isInitialLoad {
+                    self?.messagesCollectionView.scrollToLastItem(animated: false)
+                } else {
+                    self?.messagesCollectionView.scrollToLastItem(animated: true)
+                }
+
+                // SENIOR FIX: Removed the manual loadOlderButton toggling here.
+                // Scroll tracking (scrollViewDidScroll) will naturally handle its visibility.
+            }
+        }
+
+        // 2. Older Messages Loaded (Pagination)
+        viewModel.onOlderMessagesLoaded = { [weak self] in
+            DispatchQueue.main.async {
+                // Keeps scroll position intact without jumping
+                self?.messagesCollectionView.reloadDataAndKeepOffset()
+
+                // Once data is loaded, we evaluate the scroll view to see if we should still show the button
+                self?.scrollViewDidScroll(self?.messagesCollectionView ?? UIScrollView())
+            }
+        }
+    }
+
+    // MARK: - Actions
+
+    @objc private func didTapLoadOlder() {
+        // Immediately hide button to prevent multiple taps
+        toggleLoadOlderButton(show: false)
+        viewModel.loadOlderMessages()
+    }
+
+    @objc private func handleHeaderImageTap(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view as? UIImageView else { return }
+
+        print("🖼️ DEBUG: Header Profile Image tapped")
+        view.endEditing(true)
+        ImageViewerManager.shared.showFullScreen(from: tappedImageView)
+    }
+
     @objc private func didTapPlus() {
         messageInputBar.inputTextView.resignFirstResponder() // Hide keyboard
         presentActionSheet() // Show Camera/Gallery options
-    }
-
-    /// Listens for data changes in ViewModel and reloads the chat.
-    private func bindViewModel() {
-        viewModel.onMessagesUpdated = { [weak self] in
-            DispatchQueue.main.async {
-                // Refresh the list and automatically scroll to the newest message at the bottom.
-                self?.messagesCollectionView.reloadData()
-                self?.messagesCollectionView.scrollToLastItem(animated: true)
-            }
-        }
     }
 }
 
 // MARK: - MessageKit Delegates
 
-// These methods define HOW the messages look.
 extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, MessagesLayoutDelegate {
     // Who is the person using the app right now?
     var currentSender: SenderType { viewModel.currentUser }
@@ -312,7 +371,6 @@ extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, Messa
 
 // MARK: - Input Bar & Image Picker Extension
 
-// Handles selecting and sending content.
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, InputBarAccessoryViewDelegate {
     /// Shows a popup to choose between Camera or Photo Library.
     private func presentActionSheet() {
@@ -360,5 +418,48 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 
         // Clear the input field for the next message.
         inputBar.inputTextView.text = ""
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension ChatViewController {
+    /// Tracks scrolling to show or hide the pagination button dynamically.
+    /// This method overrides the default scroll view delegate from MessagesViewController.
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Calculate the actual top offset accounting for Navigation Bar and Safe Area.
+        let topOffset = -scrollView.adjustedContentInset.top
+
+        // Adding a 20-point buffer so the button appears just as they reach the top.
+        let isAtTop = scrollView.contentOffset.y <= (topOffset + 20)
+
+        // Check if we are at the top AND if there are more messages to load from the ViewModel.
+        if isAtTop && viewModel.hasMoreMessages {
+            toggleLoadOlderButton(show: true)
+        } else {
+            toggleLoadOlderButton(show: false)
+        }
+    }
+
+    /// Smoothly animates the appearance and disappearance of the "Load Older" button.
+    private func toggleLoadOlderButton(show: Bool) {
+        // Prevent redundant animations if the state is already correct.
+        let isCurrentlyShowing = !loadOlderButton.isHidden && loadOlderButton.alpha == 1.0
+        if show == isCurrentlyShowing { return }
+
+        if show {
+            // Make it visible and fade it in.
+            loadOlderButton.isHidden = false
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
+                self.loadOlderButton.alpha = 1.0
+            }
+        } else {
+            // Fade it out, then hide it so it doesn't block touches.
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
+                self.loadOlderButton.alpha = 0.0
+            } completion: { _ in
+                self.loadOlderButton.isHidden = true
+            }
+        }
     }
 }

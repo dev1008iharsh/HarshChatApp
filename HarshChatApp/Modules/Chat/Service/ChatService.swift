@@ -26,12 +26,14 @@ final class ChatService {
         guard let currentUid = Auth.auth().currentUser?.uid,
               let currentPhone = Auth.auth().currentUser?.phoneNumber else {
             print("DEBUG: ChatService - Authentication failed or session expired.")
-            // Throwing a specific error is better than just returning for the ViewModel to handle.
             throw NSError(domain: "AuthError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
         }
 
-        // Attempt to get the current user's display name for the receiver's list
-        let myName = Auth.auth().currentUser?.displayName ?? "User"
+        // ✅ FIX 1: Fetch Current User's actual Name and Profile Image from Firestore 'users' collection
+
+        let currentUserDoc = try await db.collection("users").document(currentUid).getDocument()
+        let currentUserName = currentUserDoc.data()?["name"] as? String ?? currentPhone // જો નામ ના હોય તો નંબર બતાવશે
+        let currentUserImage = currentUserDoc.data()?["profileImageUrl"] as? String ?? ""
 
         // ✅ CRITICAL IMPROVEMENT: Using Firestore Batch to ensure all or nothing updates.
         let batch = db.batch()
@@ -55,12 +57,12 @@ final class ChatService {
         // 3. MAJOR EVENT: Updating Their (Receiver) Conversation List
         let otherConversationRef = db.collection("users").document(otherUser.senderId).collection("conversations").document(chatId)
         let otherConversationData: [String: Any] = [
-            "otherUserName": myName,
+            "otherUserName": currentUserName,
             "otherUserId": currentUid,
             "otherUserPhone": currentPhone,
             "lastMessage": lastMessageText,
             "timestamp": FieldValue.serverTimestamp(),
-            "profileImageUrl": "", // Future: Pass current user's profile image
+            "profileImageUrl": currentUserImage,
         ]
         batch.setData(otherConversationData, forDocument: otherConversationRef, merge: true)
 

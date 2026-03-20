@@ -8,24 +8,23 @@
 //  📦 GitHub Repositories → https://github.com/dev1008iharsh?tab=repositories
 //
 
+import Cloudinary
 import FirebaseCore
 import UIKit
-import Cloudinary
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - App Lifecycle
-    
-    
+
     static var cloudinary: CLDCloudinary = {
-            let config = CLDConfiguration(
-                cloudName: "dsthkq3gy",
-                apiKey: "692845392632924",
-                apiSecret: "EfnxidZ5GqijFWnNf4vZeQU1iP4",
-                secure: true
-            )
-            return CLDCloudinary(configuration: config)
-        }()
+        let config = CLDConfiguration(
+            cloudName: "dsthkq3gy",
+            apiKey: "692845392632924",
+            apiSecret: "EfnxidZ5GqijFWnNf4vZeQU1iP4",
+            secure: true
+        )
+        return CLDCloudinary(configuration: config)
+    }()
 
     /// Entry point of the application where Firebase and other initial services are configured.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
