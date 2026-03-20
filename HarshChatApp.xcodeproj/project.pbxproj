@@ -54,6 +54,7 @@
 		04D26EF42F54D6BD00EB2FAB /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26EF32F54D6BC00EB2FAB /* ConversationCell.swift */; };
 		04D26EF62F54D70800EB2FAB /* ContactService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26EF52F54D70800EB2FAB /* ContactService.swift */; };
 		04D26EF82F54E0C100EB2FAB /* ImageViewerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D26EF72F54E0C000EB2FAB /* ImageViewerManager.swift */; };
+		04D9AB142F6D475800878E0C /* NetworkChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D9AB132F6D475800878E0C /* NetworkChecker.swift */; };
 		04F55F8E2F54A3100050090B /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04F55F8D2F54A3100050090B /* MessageKit */; };
 		04F81D3D2F6D4197005E0B9E /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F81D3C2F6D4196005E0B9E /* AppRouter.swift */; };
 /* End PBXBuildFile section */
@@ -100,6 +101,7 @@
 		04D26EF32F54D6BC00EB2FAB /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		04D26EF52F54D70800EB2FAB /* ContactService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactService.swift; sourceTree = "<group>"; };
 		04D26EF72F54E0C000EB2FAB /* ImageViewerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerManager.swift; sourceTree = "<group>"; };
+		04D9AB132F6D475800878E0C /* NetworkChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChecker.swift; sourceTree = "<group>"; };
 		04F81D3C2F6D4196005E0B9E /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -284,6 +286,7 @@
 		04C9B9CE2F54015300D427FA /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				04D9AB132F6D475800878E0C /* NetworkChecker.swift */,
 				04D26EF72F54E0C000EB2FAB /* ImageViewerManager.swift */,
 				0426EE162F547E4700AB494F /* LoaderManager.swift */,
 				04C9B9E12F54164600D427FA /* AlertManager.swift */,
@@ -477,6 +480,7 @@
 				04D26EF42F54D6BD00EB2FAB /* ConversationCell.swift in Sources */,
 				04325D542F54593900F7D35C /* EditProfileViewController.swift in Sources */,
 				04C9B9B12F53FE6800D427FA /* AppDelegate.swift in Sources */,
+				04D9AB142F6D475800878E0C /* NetworkChecker.swift in Sources */,
 				04D26EDD2F54D43100EB2FAB /* Conversation.swift in Sources */,
 				04D26ED92F54D42100EB2FAB /* Message.swift in Sources */,
 				04C9B9DA2F54040000D427FA /* LoginViewController.swift in Sources */,

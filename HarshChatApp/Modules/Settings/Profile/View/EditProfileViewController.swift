@@ -207,6 +207,10 @@ final class EditProfileViewController: UIViewController {
     @objc private func didTapCancel() { dismiss(animated: true) }
 
     @objc private func didTapUpdate() {
+        guard NetworkChecker.isConnected else {
+            AlertManager.showAlert(title: "Offline", message: "Please check your internet.", vc: self)
+            return
+        }
         // MAJOR EVENT: Capture all data and trigger save
         viewModel.name = nameField.textField.text ?? ""
         viewModel.bio = bioField.textField.text ?? ""

@@ -152,6 +152,11 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
+        guard NetworkChecker.isConnected else {
+            AlertManager.showAlert(title: "No Internet", message: "Please check your connection and try again.", vc: self)
+            return
+        }
         // Execute the handler closure associated with the selected option
         viewModel.sections[indexPath.section].options[indexPath.row].handler()
     }

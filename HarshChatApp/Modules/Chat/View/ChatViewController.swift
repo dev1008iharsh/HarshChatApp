@@ -270,6 +270,10 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
 
     @objc private func didTapLoadOlder() {
         // Immediately hide button to prevent multiple taps
+        guard NetworkChecker.isConnected else {
+            AlertManager.showAlert(title: "Offline", message: "Please check your internet connection.", vc: self)
+            return
+        }
         toggleLoadOlderButton(show: false)
         viewModel.loadOlderMessages()
     }
@@ -283,6 +287,13 @@ final class ChatViewController: MessagesViewController, MessageCellDelegate {
     }
 
     @objc private func didTapPlus() {
+        guard NetworkChecker.isConnected else {
+            print("🔴 DEBUG: No Internet connection. Stopping flow.")
+            AlertManager.showAlert(title: "Offline", message: "Please check your internet connection to send media.", vc: self)
+
+            // 🛑 Flow strictly stops here and goes back. Nothing below this line will execute!
+            return
+        }
         messageInputBar.inputTextView.resignFirstResponder() // Hide keyboard
         presentActionSheet() // Show Camera/Gallery options
     }
@@ -410,6 +421,11 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 
     /// Delegate method called when the 'Send' button is pressed.
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
+        guard NetworkChecker.isConnected else {
+            AlertManager.showAlert(title: "Offline", message: "Please check your internet connection.", vc: self)
+            return
+        }
+
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 

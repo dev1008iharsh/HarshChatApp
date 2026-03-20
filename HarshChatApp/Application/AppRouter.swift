@@ -31,6 +31,7 @@ final class AppRouter: NSObject { // ✅ FIX: Must inherit from NSObject to act 
 
     /// Called from SceneDelegate to begin the routing process.
     func start(in window: UIWindow) {
+        _ = NetworkChecker.shared
         self.window = window
         self.window?.makeKeyAndVisible()
         checkAuthentication()

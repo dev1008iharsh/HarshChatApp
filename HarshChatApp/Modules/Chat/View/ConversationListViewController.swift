@@ -123,6 +123,11 @@ final class ConversationListViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func didTapNewChat() {
+        guard NetworkChecker.isConnected else {
+            AlertManager.showAlert(title: "No Internet", message: "Please check your connection and try again.", vc: self)
+            return
+        }
+
         // Haptic Feedback: Provides a physical 'click' feel to the user.
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()

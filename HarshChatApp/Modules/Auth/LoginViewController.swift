@@ -296,6 +296,10 @@ final class LoginViewController: UIViewController {
 
     /// Triggers login logic in ViewModel
     @objc private func handleLogin() {
+        guard NetworkChecker.isConnected else {
+            AlertManager.showAlert(title: "No Internet", message: "Please check your connection and try again.", vc: self)
+            return
+        }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         view.endEditing(true)
         let phoneText = phoneTextField.text ?? ""
